@@ -1,0 +1,87 @@
+<footer class="site-footer">
+  <div class="page-width footer-grid">
+    <div>
+      <h2>{{ settings.brand_name | default: shop.name }}</h2>
+      <p>{{ section.settings.copy }}</p>
+      {% form 'customer', class: 'newsletter-form' %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <input type="email" name="contact[email]" autocomplete="email" placeholder="Email address" aria-label="Email address" required>
+        <button type="submit">Join</button>
+      {% endform %}
+    </div>
+
+    <div>
+      <h3>Shop</h3>
+      <div class="footer-links">
+        {% for link in section.settings.shop_menu.links %}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {% else %}
+          <a href="{{ routes.collections_url }}">New Arrivals</a>
+          <a href="{{ routes.collections_url }}">Best Sellers</a>
+          <a href="{{ routes.collections_url }}">Workwear</a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div>
+      <h3>Support</h3>
+      <div class="footer-links">
+        {% for link in section.settings.policy_menu.links %}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {% else %}
+          <a href="/pages/contact">Contact</a>
+          <a href="/policies/shipping-policy">Shipping</a>
+          <a href="/policies/refund-policy">Returns</a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div>
+      <h3>Social</h3>
+      <div class="social-links">
+        <a href="{{ section.settings.instagram_url }}">Instagram</a>
+        <a href="{{ section.settings.tiktok_url }}">TikTok</a>
+        <a href="{{ section.settings.pinterest_url }}">Pinterest</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "copy",
+      "label": "Newsletter copy",
+      "default": "Considered essentials, refined fit notes, and private collection previews."
+    },
+    {
+      "type": "link_list",
+      "id": "shop_menu",
+      "label": "Shop menu"
+    },
+    {
+      "type": "link_list",
+      "id": "policy_menu",
+      "label": "Policy menu"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok"
+    },
+    {
+      "type": "url",
+      "id": "pinterest_url",
+      "label": "Pinterest"
+    }
+  ]
+}
+{% endschema %}

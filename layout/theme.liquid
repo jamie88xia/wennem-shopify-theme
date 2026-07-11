@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_text | default: '#1A1A1A' }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {{ content_for_header }}
+    {{ settings.heading_font | font_face: font_display: 'swap' }}
+    {{ settings.body_font | font_face: font_display: 'swap' }}
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+    <style>
+      :root {
+        --font-heading: {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
+        --font-body: {{ settings.body_font.family }}, {{ settings.body_font.fallback_families }};
+        --color-bg: {{ settings.color_background | default: '#F8F6F2' }};
+        --color-surface: {{ settings.color_surface | default: '#FFFFFF' }};
+        --color-text: {{ settings.color_text | default: '#1A1A1A' }};
+        --color-muted: {{ settings.color_muted | default: '#6B6B6B' }};
+        --color-accent: {{ settings.color_accent | default: '#C6A66A' }};
+        --color-border: {{ settings.color_border | default: '#ECE9E3' }};
+        --space-section: {{ settings.section_spacing | default: 88 }}px;
+        --page-width: {{ settings.page_width | default: 1440 }}px;
+        --button-radius: {{ settings.button_radius | default: 2 }}px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#MainContent">Skip to content</a>
+
+    {% section 'announcement-bar' %}
+    {% section 'header' %}
+
+    <main id="MainContent" role="main">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer' %}
+    {% section 'cart-drawer' %}
+    {% section 'predictive-search' %}
+    {% section 'quick-view' %}
+
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+  </body>
+</html>

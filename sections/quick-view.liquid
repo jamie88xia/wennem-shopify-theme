@@ -1,0 +1,22 @@
+<aside class="quick-view" data-quick-view-overlay hidden aria-label="Quick view">
+  <div class="quick-view-backdrop" data-layer-backdrop></div>
+  <div class="quick-view-panel drawer-panel">
+    <div class="quick-view-header">
+      <h3>Quick view</h3>
+      <button class="icon-button" type="button" data-close-quick-view aria-label="Close quick view">×</button>
+    </div>
+    <div class="section">
+      <p>{{ section.settings.copy }}</p>
+      <a class="button button--primary button--full" href="{{ routes.collections_url }}">Continue shopping</a>
+    </div>
+  </div>
+</aside>
+
+{% schema %}
+{
+  "name": "Quick view",
+  "settings": [
+    { "type": "textarea", "id": "copy", "label": "Copy", "default": "Quick view is ready for product details. Connect this shell to a product endpoint when the store catalog is live." }
+  ]
+}
+{% endschema %}

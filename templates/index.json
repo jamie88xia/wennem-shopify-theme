@@ -1,0 +1,36 @@
+{
+  "sections": {
+    "hero": {
+      "type": "editorial-hero",
+      "settings": {
+        "eyebrow": "Autumn essentials",
+        "heading": "Quiet pieces, precise proportions.",
+        "copy": "A modern wardrobe of refined essentials, made for ease, movement, and lasting wear.",
+        "primary_label": "Shop new arrivals",
+        "secondary_label": "Explore the edit"
+      }
+    },
+    "collections": {
+      "type": "collection-tiles"
+    },
+    "story": {
+      "type": "editorial-story"
+    },
+    "look": {
+      "type": "shop-the-look"
+    },
+    "featured": {
+      "type": "featured-products"
+    },
+    "testimonials": {
+      "type": "testimonials"
+    },
+    "instagram": {
+      "type": "instagram-gallery"
+    },
+    "newsletter": {
+      "type": "newsletter"
+    }
+  },
+  "order": ["hero", "collections", "story", "look", "featured", "testimonials", "instagram", "newsletter"]
+}

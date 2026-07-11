@@ -1,0 +1,47 @@
+<section class="section">
+  <div class="page-width split-editorial">
+    <div class="fade-in">
+      {% if section.settings.image != blank %}
+        {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 58vw, 100vw', alt: section.settings.heading }}
+      {% else %}
+        <img src="{{ 'wennem-hero.png' | asset_url }}" alt="{{ section.settings.heading | escape }}">
+      {% endif %}
+    </div>
+    <div class="fade-in">
+      <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2>{{ section.settings.heading }}</h2>
+      <p>{{ section.settings.copy }}</p>
+      <div class="product-grid" style="grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 2rem;">
+        {% for block in section.blocks %}
+          {% if block.settings.product != blank %}
+            {% render 'product-card', product: block.settings.product %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shop the look",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Look image" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Shop the look" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Layered neutrals with architectural ease." },
+    { "type": "textarea", "id": "copy", "label": "Copy", "default": "A complete look built from pieces designed to work as a system." }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Shop the look", "blocks": [{ "type": "product" }, { "type": "product" }] }
+  ]
+}
+{% endschema %}

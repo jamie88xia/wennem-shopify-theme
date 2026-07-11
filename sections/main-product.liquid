@@ -1,0 +1,123 @@
+{% liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign product_form_id = 'product-form-' | append: section.id
+%}
+
+<section class="page-width product-page">
+  <div class="product-gallery">
+    {% for media in product.media %}
+      {% case media.media_type %}
+        {% when 'image' %}
+          {{ media | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 50vw, 100vw', alt: media.alt | default: product.title }}
+        {% when 'video' %}
+          {{ media | video_tag: controls: true, image_size: '1200x' }}
+        {% when 'external_video' %}
+          {{ media | external_video_tag }}
+        {% else %}
+          {{ media | media_tag }}
+      {% endcase %}
+    {% else %}
+      <img src="{{ 'wennem-hero.png' | asset_url }}" alt="{{ product.title | escape }}">
+      <img src="{{ 'wennem-hero-studio.png' | asset_url }}" alt="{{ product.title | escape }}">
+    {% endfor %}
+  </div>
+
+  <div class="product-panel">
+    <nav class="breadcrumbs" aria-label="Breadcrumbs">
+      <a href="{{ routes.root_url }}">Home</a> / <span>{{ product.title }}</span>
+    </nav>
+    <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+    <h1>{{ product.title }}</h1>
+    <p class="price">{{ current_variant.price | money }}</p>
+
+    {% form 'product', product, id: product_form_id, class: 'product-form' %}
+      <input type="hidden" name="id" value="{{ current_variant.id }}">
+
+      {% unless product.has_only_default_variant %}
+        {% for option in product.options_with_values %}
+          <fieldset class="variant-group">
+            <legend class="swatch-label">{{ option.name }}</legend>
+            <div class="option-grid">
+              {% for value in option.values %}
+                <label class="option-pill">
+                  <input class="visually-hidden" type="radio" name="options[{{ option.name | escape }}]" value="{{ value | escape }}" {% if option.selected_value == value %}checked{% endif %}>
+                  <span>{{ value }}</span>
+                </label>
+              {% endfor %}
+            </div>
+          </fieldset>
+        {% endfor %}
+      {% endunless %}
+
+      <div class="variant-group">
+        <p class="swatch-label">Quantity</p>
+        <div class="quantity" data-quantity>
+          <button type="button" data-quantity-button="minus" aria-label="Decrease quantity">-</button>
+          <input type="number" name="quantity" value="1" min="1" aria-label="Quantity">
+          <button type="button" data-quantity-button="plus" aria-label="Increase quantity">+</button>
+        </div>
+      </div>
+
+      <div class="purchase-actions" aria-label="Purchase actions">
+        <button class="button button--primary button--full" type="submit" {% unless current_variant.available %}disabled{% endunless %}>
+          {% if current_variant.available %}Add To Bag{% else %}Sold Out{% endif %}
+        </button>
+        <a class="button button--full" href="#size-guide">Size guide</a>
+      </div>
+    {% endform %}
+
+    <p class="microcopy">
+      {% if current_variant.inventory_quantity > 0 and current_variant.inventory_quantity < 8 %}
+        Only {{ current_variant.inventory_quantity }} left.
+      {% else %}
+        In stock. Estimated delivery in 3-6 business days.
+      {% endif %}
+    </p>
+
+    <div class="accordion">
+      <details open>
+        <summary>Description <span>+</span></summary>
+        <div>{{ product.description }}</div>
+      </details>
+      <details id="size-guide">
+        <summary>Size guide <span>+</span></summary>
+        <p>{{ section.settings.size_guide }}</p>
+      </details>
+      <details>
+        <summary>Materials <span>+</span></summary>
+        <p>{{ section.settings.materials }}</p>
+      </details>
+      <details>
+        <summary>Care instructions <span>+</span></summary>
+        <p>{{ section.settings.care }}</p>
+      </details>
+      <details>
+        <summary>Shipping and returns <span>+</span></summary>
+        <p>{{ section.settings.returns }}</p>
+      </details>
+    </div>
+
+    <div class="trust-badges">
+      <span>Secure checkout</span>
+      <span>Easy returns</span>
+      <span>Fit support</span>
+    </div>
+  </div>
+</section>
+
+<div class="sticky-atc">
+  <button class="button button--primary button--full" form="{{ product_form_id }}" type="submit">Add To Bag · {{ current_variant.price | money }}</button>
+</div>
+
+{% schema %}
+{
+  "name": "Main product",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Essential wardrobe" },
+    { "type": "textarea", "id": "size_guide", "label": "Size guide", "default": "Choose your usual size for a close, tailored fit. Between sizes, size up for ease." },
+    { "type": "textarea", "id": "materials", "label": "Materials", "default": "Premium woven fabric selected for structure, drape, and recovery." },
+    { "type": "textarea", "id": "care", "label": "Care instructions", "default": "Dry clean recommended. Steam gently between wears." },
+    { "type": "textarea", "id": "returns", "label": "Returns", "default": "Complimentary exchanges within 30 days. Returns accepted on unworn pieces with original tags." }
+  ]
+}
+{% endschema %}

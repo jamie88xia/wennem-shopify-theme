@@ -1,0 +1,15 @@
+{
+  "current": {
+    "brand_name": "MAISON ELAN",
+    "color_background": "#F8F6F2",
+    "color_surface": "#FFFFFF",
+    "color_text": "#1A1A1A",
+    "color_muted": "#6B6B6B",
+    "color_accent": "#C6A66A",
+    "color_border": "#ECE9E3",
+    "section_spacing": 88,
+    "button_radius": 2,
+    "show_product_badges": true,
+    "free_shipping_threshold": 25000
+  }
+}

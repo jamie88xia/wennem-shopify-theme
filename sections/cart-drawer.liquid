@@ -1,0 +1,56 @@
+<aside class="drawer" data-cart-drawer hidden aria-label="Cart drawer">
+  <div class="drawer-backdrop" data-layer-backdrop></div>
+  <div class="drawer-panel">
+    <div class="drawer-header">
+      <h3>Bag</h3>
+      <button class="icon-button" type="button" data-close-cart aria-label="Close cart">×</button>
+    </div>
+
+    {% liquid
+      assign threshold = settings.free_shipping_threshold | default: 25000
+      assign progress = cart.total_price | times: 100 | divided_by: threshold
+      if progress > 100
+        assign progress = 100
+      endif
+      assign remaining = threshold | minus: cart.total_price
+    %}
+
+    <div class="cart-items">
+      {% if cart.item_count > 0 %}
+        <p>
+          {% if remaining > 0 %}
+            {{ remaining | money }} away from complimentary shipping.
+          {% else %}
+            Complimentary shipping unlocked.
+          {% endif %}
+        </p>
+        <div class="progress" aria-hidden="true"><span style="width: {{ progress }}%"></span></div>
+
+        {% for item in cart.items %}
+          <article class="cart-item">
+            {{ item.image | image_url: width: 180 | image_tag: loading: 'lazy', alt: item.product.title }}
+            <div>
+              <a href="{{ item.url }}">{{ item.product.title }}</a>
+              <p>{{ item.variant.title }} · Qty {{ item.quantity }}</p>
+              <p>{{ item.final_line_price | money }}</p>
+            </div>
+          </article>
+        {% endfor %}
+      {% else %}
+        <p>Your bag is currently empty.</p>
+      {% endif %}
+    </div>
+
+    <div>
+      <form action="{{ routes.cart_url }}" method="post">
+        <input type="text" name="discount" placeholder="Discount code" aria-label="Discount code">
+        <button class="button button--primary button--full" name="checkout" type="submit">Checkout · {{ cart.total_price | money }}</button>
+      </form>
+      <a class="button button--full" href="{{ routes.cart_url }}">View bag</a>
+    </div>
+  </div>
+</aside>
+
+{% schema %}
+{ "name": "Cart drawer", "settings": [] }
+{% endschema %}

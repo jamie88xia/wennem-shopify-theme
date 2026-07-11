@@ -1,0 +1,22 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product"
+    },
+    "complete": {
+      "type": "featured-products",
+      "settings": {
+        "eyebrow": "Complete the look",
+        "heading": "Pieces to wear with it."
+      }
+    },
+    "recent": {
+      "type": "featured-products",
+      "settings": {
+        "eyebrow": "Recently viewed",
+        "heading": "Keep considering."
+      }
+    }
+  },
+  "order": ["main", "complete", "recent"]
+}

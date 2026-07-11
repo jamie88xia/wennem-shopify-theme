@@ -1,0 +1,41 @@
+<section class="section">
+  <div class="page-width">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2>{{ section.settings.heading }}</h2>
+      </div>
+    </div>
+    <div class="testimonials">
+      {% for block in section.blocks %}
+        <article class="testimonial fade-in" {{ block.shopify_attributes }}>
+          <blockquote>“{{ block.settings.quote }}”</blockquote>
+          <p>{{ block.settings.cite }}</p>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Fit notes" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Considered by women who notice the details." }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "The tailoring feels quiet, exact, and easy to wear all day." },
+        { "type": "text", "id": "cite", "label": "Citation", "default": "Mara, New York" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Testimonials", "blocks": [{ "type": "testimonial" }, { "type": "testimonial" }, { "type": "testimonial" }] }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,44 @@
+<header class="site-header" aria-label="Primary">
+  <div class="page-width header-inner">
+    <button class="mobile-menu-button icon-button" type="button" aria-label="Open menu">☰</button>
+
+    <nav class="nav" aria-label="Main navigation">
+      {% if section.settings.menu != blank %}
+        {% for link in section.settings.menu.links %}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {% endfor %}
+      {% else %}
+        <a href="{{ routes.collections_url }}">Shop</a>
+        <a href="/pages/about">Craft</a>
+        <a href="/pages/editorial">Editorial</a>
+      {% endif %}
+    </nav>
+
+    <a class="brand" href="{{ routes.root_url }}" aria-label="{{ shop.name }} home" style="--logo-width: {{ settings.logo_width }}px">
+      {% if settings.logo != blank %}
+        {{ settings.logo | image_url: width: 440 | image_tag: alt: settings.brand_name }}
+      {% else %}
+        {{ settings.brand_name | default: shop.name }}
+      {% endif %}
+    </a>
+
+    <div class="header-actions">
+      <button type="button" data-open-search>Search</button>
+      <a href="{{ routes.account_url }}">Account</a>
+      <button type="button" data-open-cart>Bag <span>{{ cart.item_count }}</span></button>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
+    }
+  ]
+}
+{% endschema %}

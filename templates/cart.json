@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-cart"
+    },
+    "recommendations": {
+      "type": "featured-products",
+      "settings": {
+        "eyebrow": "Recommended",
+        "heading": "Complete your order"
+      }
+    }
+  },
+  "order": ["main", "recommendations"]
+}

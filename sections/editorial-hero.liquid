@@ -1,0 +1,41 @@
+<section class="hero">
+  {% if section.settings.video != blank %}
+    {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '2200x' }}
+  {% elsif section.settings.image != blank %}
+    {{ section.settings.image | image_url: width: 2400 | image_tag: loading: 'eager', sizes: '100vw', alt: section.settings.heading }}
+  {% else %}
+    <img src="{{ 'wennem-hero.png' | asset_url }}" alt="{{ section.settings.heading | escape }}">
+  {% endif %}
+
+  <div class="hero-content">
+    {% if section.settings.eyebrow != blank %}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{% endif %}
+    <h1>{{ section.settings.heading }}</h1>
+    {% if section.settings.copy != blank %}<p>{{ section.settings.copy }}</p>{% endif %}
+    <div class="hero-actions">
+      {% if section.settings.primary_label != blank %}
+        <a class="button button--primary" href="{{ section.settings.primary_link }}">{{ section.settings.primary_label }}</a>
+      {% endif %}
+      {% if section.settings.secondary_label != blank %}
+        <a class="button" href="{{ section.settings.secondary_link }}">{{ section.settings.secondary_label }}</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Editorial hero",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "video", "id": "video", "label": "Video" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Autumn essentials" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Quiet pieces, precise proportions." },
+    { "type": "textarea", "id": "copy", "label": "Copy", "default": "A modern wardrobe of refined essentials, made for ease, movement, and lasting wear." },
+    { "type": "text", "id": "primary_label", "label": "Primary CTA", "default": "Shop new arrivals" },
+    { "type": "url", "id": "primary_link", "label": "Primary link" },
+    { "type": "text", "id": "secondary_label", "label": "Secondary CTA", "default": "Explore the edit" },
+    { "type": "url", "id": "secondary_link", "label": "Secondary link" }
+  ],
+  "presets": [{ "name": "Editorial hero" }]
+}
+{% endschema %}

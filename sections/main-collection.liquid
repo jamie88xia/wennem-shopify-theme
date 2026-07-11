@@ -1,0 +1,71 @@
+<section class="collection-hero">
+  <div class="page-width">
+    <nav class="breadcrumbs" aria-label="Breadcrumbs">
+      <a href="{{ routes.root_url }}">Home</a> / <span>{{ collection.title }}</span>
+    </nav>
+    <h1>{{ collection.title }}</h1>
+    {% if collection.description != blank %}<div>{{ collection.description }}</div>{% endif %}
+    <p class="product-count">{{ collection.products_count }} products</p>
+  </div>
+</section>
+
+<section class="page-width collection-layout">
+  <aside class="filter-panel" aria-label="Collection filters">
+    <form>
+      {% for filter in collection.filters %}
+        <details class="filter-group" open>
+          <summary>{{ filter.label }} <span>+</span></summary>
+          <div class="filter-values">
+            {% for value in filter.values %}
+              <label>
+                <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}>
+                <span>{{ value.label }}{% unless value.count == 0 %} ({{ value.count }}){% endunless %}</span>
+              </label>
+            {% endfor %}
+          </div>
+        </details>
+      {% else %}
+        <details class="filter-group" open>
+          <summary>Size <span>+</span></summary>
+          <div class="filter-values"><label><input type="checkbox"> XS</label><label><input type="checkbox"> S</label><label><input type="checkbox"> M</label></div>
+        </details>
+        <details class="filter-group" open>
+          <summary>Color <span>+</span></summary>
+          <div class="filter-values"><label><input type="checkbox"> Black</label><label><input type="checkbox"> Ivory</label><label><input type="checkbox"> Taupe</label></div>
+        </details>
+        <details class="filter-group" open>
+          <summary>Price <span>+</span></summary>
+          <div class="filter-values"><label><input type="checkbox"> Under $200</label><label><input type="checkbox"> $200-$400</label></div>
+        </details>
+      {% endfor %}
+      <button class="button button--full" type="submit">Apply filters</button>
+    </form>
+  </aside>
+
+  <div>
+    {% paginate collection.products by section.settings.products_per_page %}
+      <div class="product-grid">
+        {% for product in collection.products %}
+          {% render 'product-card', product: product %}
+        {% else %}
+          <p>No products found.</p>
+        {% endfor %}
+      </div>
+
+      {% if paginate.next %}
+        <div class="load-more">
+          <a class="button" href="{{ paginate.next.url }}">Load more</a>
+        </div>
+      {% endif %}
+    {% endpaginate %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": [
+    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 16 }
+  ]
+}
+{% endschema %}

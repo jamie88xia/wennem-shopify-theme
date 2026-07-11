@@ -1,0 +1,46 @@
+<aside class="search-overlay" data-search-overlay hidden aria-label="Search">
+  <div class="search-backdrop" data-layer-backdrop></div>
+  <div class="search-panel">
+    <div class="search-header">
+      <h3>Search</h3>
+      <button class="icon-button" type="button" data-close-search aria-label="Close search">×</button>
+    </div>
+    <form class="search-form" action="{{ routes.search_url }}" method="get" role="search">
+      <input type="search" name="q" placeholder="Search essentials, dresses, tailoring" aria-label="Search" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <div class="section">
+      <p class="eyebrow">Popular searches</p>
+      <div class="footer-links">
+        {% for block in section.blocks %}
+          <a href="{{ routes.search_url }}?q={{ block.settings.term | url_encode }}">{{ block.settings.term }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</aside>
+
+{% schema %}
+{
+  "name": "Predictive search",
+  "blocks": [
+    {
+      "type": "term",
+      "name": "Popular search",
+      "settings": [
+        { "type": "text", "id": "term", "label": "Term", "default": "Wide-leg trousers" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Predictive search",
+      "blocks": [
+        { "type": "term" },
+        { "type": "term" },
+        { "type": "term" }
+      ]
+    }
+  ]
+}
+{% endschema %}
