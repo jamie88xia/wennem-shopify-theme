@@ -17,18 +17,26 @@
           {{ media | media_tag }}
       {% endcase %}
     {% else %}
-      <img src="{{ 'wennem-hero.png' | asset_url }}" alt="{{ product.title | escape }}">
-      <img src="{{ 'wennem-hero-studio.png' | asset_url }}" alt="{{ product.title | escape }}">
+      <img src="{{ 'wennem-hero.png' | asset_url }}" width="1693" height="929" alt="{{ product.title | escape }}">
+      <img src="{{ 'wennem-hero-studio.png' | asset_url }}" width="1536" height="1024" alt="{{ product.title | escape }}">
     {% endfor %}
   </div>
 
   <div class="product-panel">
-    <nav class="breadcrumbs" aria-label="Breadcrumbs">
-      <a href="{{ routes.root_url }}">Home</a> / <span>{{ product.title }}</span>
-    </nav>
+    {% render 'breadcrumbs', product: product, collection: collection %}
     <p class="eyebrow">{{ section.settings.eyebrow }}</p>
     <h1>{{ product.title }}</h1>
-    <p class="price">{{ current_variant.price | money }}</p>
+    {% if product.metafields.custom.subtitle != blank %}
+      <p class="product-subtitle">{{ product.metafields.custom.subtitle.value | default: product.metafields.custom.subtitle }}</p>
+    {% endif %}
+    {% render 'price-display', product: product, variant: current_variant %}
+
+    {% if product.metafields.custom.fit_summary != blank %}
+      <div class="fit-summary">
+        <h2>Petite fit summary</h2>
+        <p>{{ product.metafields.custom.fit_summary.value | default: product.metafields.custom.fit_summary }}</p>
+      </div>
+    {% endif %}
 
     {% form 'product', product, id: product_form_id, class: 'product-form' %}
       <input type="hidden" name="id" value="{{ current_variant.id }}">
@@ -51,18 +59,14 @@
 
       <div class="variant-group">
         <p class="swatch-label">Quantity</p>
-        <div class="quantity" data-quantity>
-          <button type="button" data-quantity-button="minus" aria-label="Decrease quantity">-</button>
-          <input type="number" name="quantity" value="1" min="1" aria-label="Quantity">
-          <button type="button" data-quantity-button="plus" aria-label="Increase quantity">+</button>
-        </div>
+        {% render 'quantity-selector', label: 'product quantity' %}
       </div>
 
       <div class="purchase-actions" aria-label="Purchase actions">
         <button class="button button--primary button--full" type="submit" {% unless current_variant.available %}disabled{% endunless %}>
           {% if current_variant.available %}Add To Bag{% else %}Sold Out{% endif %}
         </button>
-        <a class="button button--full" href="#size-guide">Size guide</a>
+        <a class="button button--full" href="/pages/size-guide">Size guide</a>
       </div>
     {% endform %}
 
@@ -74,18 +78,59 @@
       {% endif %}
     </p>
 
+    <div class="fit-tools">
+      <div class="fit-tool">
+        <span>Fit rating</span>
+        <strong>{{ product.metafields.custom.fit_rating.value | default: product.metafields.custom.fit_rating | default: section.settings.fit_rating }}</strong>
+      </div>
+      <div class="fit-tool">
+        <span>Recommended height</span>
+        <strong>{{ product.metafields.custom.recommended_height_range.value | default: product.metafields.custom.recommended_height_range | default: section.settings.height_range }}</strong>
+      </div>
+      <div class="fit-tool">
+        <span>Fabric stretch</span>
+        <strong>{{ product.metafields.custom.stretch_level.value | default: product.metafields.custom.stretch_level | default: section.settings.stretch_level }}</strong>
+      </div>
+    </div>
+
+    <div class="measurement-card">
+      <h2>Garment measurements</h2>
+      <dl>
+        {% if product.metafields.custom.rise != blank %}<div><dt>Rise</dt><dd>{{ product.metafields.custom.rise.value | default: product.metafields.custom.rise }}</dd></div>{% endif %}
+        {% if product.metafields.custom.inseam != blank %}<div><dt>Inseam</dt><dd>{{ product.metafields.custom.inseam.value | default: product.metafields.custom.inseam }}</dd></div>{% endif %}
+        {% if product.metafields.custom.waist_measurement != blank %}<div><dt>Waist</dt><dd>{{ product.metafields.custom.waist_measurement.value | default: product.metafields.custom.waist_measurement }}</dd></div>{% endif %}
+        {% if product.metafields.custom.hip_measurement != blank %}<div><dt>Hip</dt><dd>{{ product.metafields.custom.hip_measurement.value | default: product.metafields.custom.hip_measurement }}</dd></div>{% endif %}
+        {% if product.metafields.custom.thigh_measurement != blank %}<div><dt>Thigh</dt><dd>{{ product.metafields.custom.thigh_measurement.value | default: product.metafields.custom.thigh_measurement }}</dd></div>{% endif %}
+        {% if product.metafields.custom.leg_opening != blank %}<div><dt>Leg opening</dt><dd>{{ product.metafields.custom.leg_opening.value | default: product.metafields.custom.leg_opening }}</dd></div>{% endif %}
+      </dl>
+      {% if product.metafields.custom.rise == blank and product.metafields.custom.inseam == blank and product.metafields.custom.waist_measurement == blank %}
+        <p>{{ section.settings.measurement_fallback }}</p>
+      {% endif %}
+    </div>
+
+    <div class="model-card">
+      <h2>Model reference</h2>
+      <p>
+        {{ product.metafields.custom.model_height.value | default: product.metafields.custom.model_height | default: section.settings.model_height }}
+        wearing {{ product.metafields.custom.model_size.value | default: product.metafields.custom.model_size | default: section.settings.model_size }}
+        {% if product.metafields.custom.model_inseam != blank %}
+          with a {{ product.metafields.custom.model_inseam.value | default: product.metafields.custom.model_inseam }} inseam.
+        {% endif %}
+      </p>
+    </div>
+
     <div class="accordion">
       <details open>
         <summary>Description <span>+</span></summary>
         <div>{{ product.description }}</div>
       </details>
-      <details id="size-guide">
-        <summary>Size guide <span>+</span></summary>
-        <p>{{ section.settings.size_guide }}</p>
+      <details>
+        <summary>Fit and sizing <span>+</span></summary>
+        <p>{{ product.metafields.custom.fit_notes.value | default: product.metafields.custom.fit_notes | default: section.settings.size_guide }}</p>
       </details>
       <details>
         <summary>Materials <span>+</span></summary>
-        <p>{{ section.settings.materials }}</p>
+        <p>{{ product.metafields.custom.fabric_composition.value | default: product.metafields.custom.fabric_composition | default: section.settings.materials }}</p>
       </details>
       <details>
         <summary>Care instructions <span>+</span></summary>
@@ -93,7 +138,11 @@
       </details>
       <details>
         <summary>Shipping and returns <span>+</span></summary>
-        <p>{{ section.settings.returns }}</p>
+        <p>{{ product.metafields.custom.shipping_note.value | default: product.metafields.custom.shipping_note | default: section.settings.returns }}</p>
+      </details>
+      <details>
+        <summary>Styling notes <span>+</span></summary>
+        <p>{{ product.metafields.custom.styling_notes.value | default: product.metafields.custom.styling_notes | default: section.settings.styling_notes }}</p>
       </details>
     </div>
 
@@ -114,10 +163,17 @@
   "name": "Main product",
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Essential wardrobe" },
-    { "type": "textarea", "id": "size_guide", "label": "Size guide", "default": "Choose your usual size for a close, tailored fit. Between sizes, size up for ease." },
+    { "type": "textarea", "id": "size_guide", "label": "Fit and sizing fallback", "default": "Choose your usual size for a close, tailored fit. Between sizes, size up for ease." },
+    { "type": "text", "id": "fit_rating", "label": "Fit rating fallback", "default": "True to size" },
+    { "type": "text", "id": "height_range", "label": "Recommended height fallback", "default": "5'4\" and under" },
+    { "type": "text", "id": "stretch_level", "label": "Stretch fallback", "default": "Structured with light ease" },
+    { "type": "text", "id": "model_height", "label": "Model height fallback", "default": "Model is 5'2\"" },
+    { "type": "text", "id": "model_size", "label": "Model size fallback", "default": "size 2" },
+    { "type": "textarea", "id": "measurement_fallback", "label": "Measurement fallback", "default": "Detailed garment measurements can be added through product metafields as the first two styles are finalized." },
     { "type": "textarea", "id": "materials", "label": "Materials", "default": "Premium woven fabric selected for structure, drape, and recovery." },
     { "type": "textarea", "id": "care", "label": "Care instructions", "default": "Dry clean recommended. Steam gently between wears." },
-    { "type": "textarea", "id": "returns", "label": "Returns", "default": "Complimentary exchanges within 30 days. Returns accepted on unworn pieces with original tags." }
+    { "type": "textarea", "id": "returns", "label": "Returns", "default": "Complimentary exchanges within 30 days. Returns accepted on unworn pieces with original tags." },
+    { "type": "textarea", "id": "styling_notes", "label": "Styling notes fallback", "default": "Designed to pair with refined shirting, soft knits, and tailored layers for office-to-evening wear." }
   ]
 }
 {% endschema %}

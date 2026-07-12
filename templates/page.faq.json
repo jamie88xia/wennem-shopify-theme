@@ -1,0 +1,32 @@
+{
+  "sections": {
+    "main": {
+      "type": "faq",
+      "blocks": {
+        "petite": {
+          "type": "question",
+          "settings": {
+            "question": "What makes WENNEM petite?",
+            "answer": "WENNEM trousers are drafted around petite proportions, including rise, knee placement, inseam, and leg shape."
+          }
+        },
+        "two_products": {
+          "type": "question",
+          "settings": {
+            "question": "Why only two products at launch?",
+            "answer": "We are starting with two focused trouser styles so fit, fabric, and proportion can be refined before expanding the collection."
+          }
+        },
+        "hemming": {
+          "type": "question",
+          "settings": {
+            "question": "Will I need hemming?",
+            "answer": "The goal is to reduce hemming by offering petite inseams from the start. Check each product page for garment-specific inseam details."
+          }
+        }
+      },
+      "block_order": ["petite", "two_products", "hemming"]
+    }
+  },
+  "order": ["main"]
+}

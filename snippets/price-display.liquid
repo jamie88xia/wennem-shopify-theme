@@ -1,0 +1,13 @@
+{% liquid
+  assign price_variant = variant | default: product.selected_or_first_available_variant
+  assign price_product = product
+%}
+
+<div class="price-display">
+  <span>{{ price_variant.price | default: price_product.price | money }}</span>
+  {% if price_variant.compare_at_price > price_variant.price %}
+    <s>{{ price_variant.compare_at_price | money }}</s>
+  {% elsif price_product.compare_at_price > price_product.price %}
+    <s>{{ price_product.compare_at_price | money }}</s>
+  {% endif %}
+</div>

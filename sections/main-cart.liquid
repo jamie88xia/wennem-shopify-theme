@@ -10,13 +10,24 @@
               <div>
                 <a href="{{ item.url }}">{{ item.product.title }}</a>
                 <p>{{ item.variant.title }}</p>
+                {% if item.properties != blank %}
+                  <ul class="line-properties">
+                    {% for property in item.properties %}
+                      {% unless property.last == blank %}
+                        <li>{{ property.first }}: {{ property.last }}</li>
+                      {% endunless %}
+                    {% endfor %}
+                  </ul>
+                {% endif %}
                 <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" aria-label="Quantity for {{ item.product.title | escape }}">
+                <a href="{{ item.url_to_remove }}">Remove</a>
                 <p>{{ item.final_line_price | money }}</p>
               </div>
             </article>
           {% endfor %}
         </div>
         <button class="button" type="submit">Update bag</button>
+        <label class="cart-note">Order note<textarea name="note" rows="3">{{ cart.note }}</textarea></label>
         <button class="button button--primary" name="checkout" type="submit">Checkout · {{ cart.total_price | money }}</button>
       </form>
     {% else %}

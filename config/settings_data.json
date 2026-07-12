@@ -1,6 +1,6 @@
 {
   "current": {
-    "brand_name": "MAISON ELAN",
+    "brand_name": "WENNEM",
     "color_background": "#F8F6F2",
     "color_surface": "#FFFFFF",
     "color_text": "#1A1A1A",
@@ -8,7 +8,11 @@
     "color_accent": "#C6A66A",
     "color_border": "#ECE9E3",
     "section_spacing": 88,
+    "base_font_size": 15,
+    "heading_scale": 100,
     "button_radius": 2,
+    "button_style": "solid",
+    "product_card_ratio": "3 / 4",
     "show_product_badges": true,
     "free_shipping_threshold": 25000
   }

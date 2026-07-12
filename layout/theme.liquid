@@ -31,15 +31,18 @@
         --color-muted: {{ settings.color_muted | default: '#6B6B6B' }};
         --color-accent: {{ settings.color_accent | default: '#C6A66A' }};
         --color-border: {{ settings.color_border | default: '#ECE9E3' }};
+        --font-base-size: {{ settings.base_font_size | default: 15 }}px;
+        --heading-scale: {{ settings.heading_scale | default: 100 | divided_by: 100.0 }};
         --space-section: {{ settings.section_spacing | default: 88 }}px;
         --page-width: {{ settings.page_width | default: 1440 }}px;
         --button-radius: {{ settings.button_radius | default: 2 }}px;
+        --product-card-ratio: {{ settings.product_card_ratio | default: '3 / 4' }};
       }
     </style>
   </head>
 
   <body>
-    <a class="skip-link" href="#MainContent">Skip to content</a>
+    <a class="skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
 
     {% section 'announcement-bar' %}
     {% section 'header' %}

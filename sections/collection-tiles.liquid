@@ -15,7 +15,7 @@
           {% elsif collection.featured_image %}
             {{ collection.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 20vw, 50vw', alt: collection.title }}
           {% else %}
-            <img src="{{ 'wennem-hero-studio.png' | asset_url }}" alt="{{ block.settings.title | escape }}">
+            <img src="{{ 'wennem-hero-studio.png' | asset_url }}" width="1536" height="1024" alt="{{ block.settings.title | escape }}">
           {% endif %}
           <span>{{ block.settings.title | default: collection.title }}</span>
         </a>

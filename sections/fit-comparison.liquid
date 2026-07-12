@@ -1,0 +1,62 @@
+<section class="section fit-comparison">
+  <div class="page-width comparison-layout">
+    <div class="comparison-copy fade-in">
+      {% if section.settings.eyebrow != blank %}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{% endif %}
+      <h2>{{ section.settings.heading }}</h2>
+      <p>{{ section.settings.copy }}</p>
+      {% if section.settings.button_label != blank %}
+        <a class="button" href="{{ section.settings.button_link }}">{{ section.settings.button_label }}</a>
+      {% endif %}
+    </div>
+
+    <div class="comparison-panels">
+      <article class="comparison-panel fade-in">
+        {% if section.settings.standard_image != blank %}
+          {{ section.settings.standard_image | image_url: width: 1000 | image_tag: loading: 'lazy', sizes: '(min-width: 900px) 28vw, 100vw', alt: section.settings.standard_heading }}
+        {% else %}
+          <img src="{{ 'wennem-hero-studio.png' | asset_url }}" width="1536" height="1024" alt="{{ section.settings.standard_heading | escape }}">
+        {% endif %}
+        <div>
+          <p class="eyebrow">{{ section.settings.standard_label }}</p>
+          <h3>{{ section.settings.standard_heading }}</h3>
+          <p>{{ section.settings.standard_copy }}</p>
+        </div>
+      </article>
+
+      <article class="comparison-panel comparison-panel--accent fade-in">
+        {% if section.settings.petite_image != blank %}
+          {{ section.settings.petite_image | image_url: width: 1000 | image_tag: loading: 'lazy', sizes: '(min-width: 900px) 28vw, 100vw', alt: section.settings.petite_heading }}
+        {% else %}
+          <img src="{{ 'wennem-hero-atelier.png' | asset_url }}" width="1536" height="1024" alt="{{ section.settings.petite_heading | escape }}">
+        {% endif %}
+        <div>
+          <p class="eyebrow">{{ section.settings.petite_label }}</p>
+          <h3>{{ section.settings.petite_heading }}</h3>
+          <p>{{ section.settings.petite_copy }}</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Fit comparison",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Fit comparison" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Not shortened. Rebalanced." },
+    { "type": "textarea", "id": "copy", "label": "Copy", "default": "Standard trousers often keep the same rise, knee placement, and leg shape. WENNEM scales the full proportion so the trouser sits where it should." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "View the size guide" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "image_picker", "id": "standard_image", "label": "Standard fit image" },
+    { "type": "text", "id": "standard_label", "label": "Standard label", "default": "Standard petite alteration" },
+    { "type": "text", "id": "standard_heading", "label": "Standard heading", "default": "Hemmed but not proportioned" },
+    { "type": "textarea", "id": "standard_copy", "label": "Standard copy", "default": "Shortening a regular trouser can leave the rise, knee, thigh, and opening in the wrong places." },
+    { "type": "image_picker", "id": "petite_image", "label": "WENNEM fit image" },
+    { "type": "text", "id": "petite_label", "label": "WENNEM label", "default": "WENNEM petite draft" },
+    { "type": "text", "id": "petite_heading", "label": "WENNEM heading", "default": "Scaled through the full leg" },
+    { "type": "textarea", "id": "petite_copy", "label": "WENNEM copy", "default": "Rise, inseam, knee, hip, thigh, and leg opening are considered together for a cleaner line." }
+  ],
+  "presets": [{ "name": "Fit comparison" }]
+}
+{% endschema %}

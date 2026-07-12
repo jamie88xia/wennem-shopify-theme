@@ -3,12 +3,18 @@
     "hero": {
       "type": "editorial-hero",
       "settings": {
-        "eyebrow": "Autumn essentials",
-        "heading": "Quiet pieces, precise proportions.",
-        "copy": "A modern wardrobe of refined essentials, made for ease, movement, and lasting wear.",
-        "primary_label": "Shop new arrivals",
-        "secondary_label": "Explore the edit"
+        "eyebrow": "Petite workwear",
+        "heading": "Premium workwear designed for petite proportions.",
+        "copy": "WENNEM launches with two refined trouser styles made for shorter frames, with considered rises, inseams, and leg shapes from the first pattern.",
+        "primary_label": "Shop the trousers",
+        "secondary_label": "Understand the fit"
       }
+    },
+    "petite_promise": {
+      "type": "petite-fit-promise"
+    },
+    "fit_comparison": {
+      "type": "fit-comparison"
     },
     "collections": {
       "type": "collection-tiles"
@@ -32,5 +38,5 @@
       "type": "newsletter"
     }
   },
-  "order": ["hero", "collections", "story", "look", "featured", "testimonials", "instagram", "newsletter"]
+  "order": ["hero", "petite_promise", "featured", "fit_comparison", "story", "look", "collections", "testimonials", "instagram", "newsletter"]
 }

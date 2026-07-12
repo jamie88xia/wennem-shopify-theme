@@ -5,6 +5,9 @@ const selectors = {
   openSearch: "[data-open-search]",
   closeSearch: "[data-close-search]",
   searchOverlay: "[data-search-overlay]",
+  openMenu: "[data-open-menu]",
+  closeMenu: "[data-close-menu]",
+  mobileMenu: "[data-mobile-menu]",
   quickView: "[data-quick-view]",
   closeQuickView: "[data-close-quick-view]",
   quickViewOverlay: "[data-quick-view-overlay]",
@@ -15,6 +18,27 @@ const selectors = {
 function trapEscape(element, close) {
   element.addEventListener("keydown", (event) => {
     if (event.key === "Escape") close();
+  });
+}
+
+function trapFocus(element, close) {
+  element.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") close();
+    if (event.key !== "Tab") return;
+
+    const focusable = [...element.querySelectorAll("a, button, input, select, textarea, [tabindex]:not([tabindex='-1'])")]
+      .filter((node) => !node.hasAttribute("disabled"));
+    if (!focusable.length) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
   });
 }
 
@@ -37,6 +61,7 @@ function closeLayer(layer) {
 const cartDrawer = document.querySelector(selectors.cartDrawer);
 const searchOverlay = document.querySelector(selectors.searchOverlay);
 const quickViewOverlay = document.querySelector(selectors.quickViewOverlay);
+const mobileMenu = document.querySelector(selectors.mobileMenu);
 
 document.querySelectorAll(selectors.openCart).forEach((button) => {
   button.addEventListener("click", () => openLayer(cartDrawer));
@@ -54,6 +79,14 @@ document.querySelectorAll(selectors.closeSearch).forEach((button) => {
   button.addEventListener("click", () => closeLayer(searchOverlay));
 });
 
+document.querySelectorAll(selectors.openMenu).forEach((button) => {
+  button.addEventListener("click", () => openLayer(mobileMenu));
+});
+
+document.querySelectorAll(selectors.closeMenu).forEach((button) => {
+  button.addEventListener("click", () => closeLayer(mobileMenu));
+});
+
 document.querySelectorAll(selectors.quickView).forEach((button) => {
   button.addEventListener("click", () => openLayer(quickViewOverlay));
 });
@@ -62,9 +95,10 @@ document.querySelectorAll(selectors.closeQuickView).forEach((button) => {
   button.addEventListener("click", () => closeLayer(quickViewOverlay));
 });
 
-[cartDrawer, searchOverlay, quickViewOverlay].forEach((layer) => {
+[cartDrawer, searchOverlay, quickViewOverlay, mobileMenu].forEach((layer) => {
   if (!layer) return;
   trapEscape(layer, () => closeLayer(layer));
+  trapFocus(layer, () => closeLayer(layer));
   layer.addEventListener("click", (event) => {
     if (event.target.matches("[data-layer-backdrop]")) closeLayer(layer);
   });

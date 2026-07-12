@@ -31,7 +31,20 @@
             {{ item.image | image_url: width: 180 | image_tag: loading: 'lazy', alt: item.product.title }}
             <div>
               <a href="{{ item.url }}">{{ item.product.title }}</a>
-              <p>{{ item.variant.title }} · Qty {{ item.quantity }}</p>
+              <p>{{ item.variant.title }}</p>
+              {% if item.properties != blank %}
+                <ul class="line-properties">
+                  {% for property in item.properties %}
+                    {% unless property.last == blank %}
+                      <li>{{ property.first }}: {{ property.last }}</li>
+                    {% endunless %}
+                  {% endfor %}
+                </ul>
+              {% endif %}
+              <div class="cart-line-actions">
+                <span>Qty {{ item.quantity }}</span>
+                <a href="{{ item.url_to_remove }}">Remove</a>
+              </div>
               <p>{{ item.final_line_price | money }}</p>
             </div>
           </article>
@@ -44,8 +57,10 @@
     <div>
       <form action="{{ routes.cart_url }}" method="post">
         <input type="text" name="discount" placeholder="Discount code" aria-label="Discount code">
+        <label class="cart-note">Order note<textarea name="note" rows="3">{{ cart.note }}</textarea></label>
         <button class="button button--primary button--full" name="checkout" type="submit">Checkout · {{ cart.total_price | money }}</button>
       </form>
+      <a class="button button--full" href="{{ routes.collections_url }}">Continue shopping</a>
       <a class="button button--full" href="{{ routes.cart_url }}">View bag</a>
     </div>
   </div>

@@ -1,0 +1,17 @@
+<nav class="breadcrumbs" aria-label="Breadcrumbs">
+  <a href="{{ routes.root_url }}">Home</a>
+  {% if collection %}
+    <span aria-hidden="true">/</span>
+    <a href="{{ collection.url }}">{{ collection.title }}</a>
+  {% endif %}
+  {% if product %}
+    <span aria-hidden="true">/</span>
+    <span>{{ product.title }}</span>
+  {% elsif page %}
+    <span aria-hidden="true">/</span>
+    <span>{{ page.title }}</span>
+  {% elsif collection %}
+    <span aria-hidden="true">/</span>
+    <span>{{ collection.title }}</span>
+  {% endif %}
+</nav>

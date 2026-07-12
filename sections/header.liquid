@@ -1,6 +1,6 @@
 <header class="site-header" aria-label="Primary">
   <div class="page-width header-inner">
-    <button class="mobile-menu-button icon-button" type="button" aria-label="Open menu">☰</button>
+    <button class="mobile-menu-button icon-button" type="button" aria-label="{{ 'general.accessibility.open_menu' | t }}" data-open-menu aria-controls="MobileMenu">☰</button>
 
     <nav class="nav" aria-label="Main navigation">
       {% if section.settings.menu != blank %}
@@ -29,6 +29,34 @@
     </div>
   </div>
 </header>
+
+<aside id="MobileMenu" class="drawer mobile-menu" data-mobile-menu hidden aria-label="Mobile menu">
+  <div class="drawer-backdrop" data-layer-backdrop></div>
+  <div class="drawer-panel drawer-panel--left">
+    <div class="drawer-header">
+      <h3>Menu</h3>
+      <button class="icon-button" type="button" data-close-menu aria-label="{{ 'general.accessibility.close' | t }}">×</button>
+    </div>
+
+    <nav class="mobile-nav" aria-label="Mobile navigation">
+      {% if section.settings.menu != blank %}
+        {% for link in section.settings.menu.links %}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {% endfor %}
+      {% else %}
+        <a href="{{ routes.collections_url }}">Shop</a>
+        <a href="/pages/about">About</a>
+        <a href="/pages/size-guide">Size guide</a>
+        <a href="/pages/faq">FAQ</a>
+      {% endif %}
+    </nav>
+
+    <div class="mobile-menu__note">
+      <p class="eyebrow">Petite workwear</p>
+      <p>Two precise trouser styles to start, with a fit system built for shorter frames.</p>
+    </div>
+  </div>
+</aside>
 
 {% schema %}
 {

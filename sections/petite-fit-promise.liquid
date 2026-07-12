@@ -1,0 +1,51 @@
+<section class="section petite-promise">
+  <div class="page-width">
+    <div class="section-heading">
+      {% if section.settings.eyebrow != blank %}<p class="eyebrow">{{ section.settings.eyebrow }}</p>{% endif %}
+      <h2>{{ section.settings.heading }}</h2>
+      {% if section.settings.copy != blank %}<p>{{ section.settings.copy }}</p>{% endif %}
+    </div>
+
+    <div class="promise-grid">
+      {% for block in section.blocks %}
+        <article class="promise-item fade-in" {{ block.shopify_attributes }}>
+          <span class="promise-item__index">0{{ forloop.index }}</span>
+          <h3>{{ block.settings.heading }}</h3>
+          <p>{{ block.settings.copy }}</p>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Petite fit promise",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Petite by design" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Proportions drafted for shorter frames from the first pattern." },
+    { "type": "textarea", "id": "copy", "label": "Copy", "default": "WENNEM starts with two focused trouser styles and a fit system built around petite proportions, not standard patterns shortened at the hem." }
+  ],
+  "blocks": [
+    {
+      "type": "point",
+      "name": "Fit point",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Shorter rise" },
+        { "type": "textarea", "id": "copy", "label": "Copy", "default": "A rise scaled for petite torsos so the waistband lands cleanly without excess fabric." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Petite fit promise",
+      "blocks": [
+        { "type": "point", "settings": { "heading": "Shorter rise", "copy": "A rise scaled for petite torsos so the waistband lands cleanly without excess fabric." } },
+        { "type": "point", "settings": { "heading": "Adjusted knee placement", "copy": "The leg break is positioned for shorter proportions, keeping the silhouette intentional." } },
+        { "type": "point", "settings": { "heading": "Petite inseams", "copy": "Lengths are considered from the start, reducing the need for hemming after purchase." } },
+        { "type": "point", "settings": { "heading": "Balanced leg shape", "copy": "Waist, hip, thigh, and opening measurements are tuned together so the trouser reads polished." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

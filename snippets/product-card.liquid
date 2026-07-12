@@ -41,8 +41,9 @@
 
   <div class="product-card__info">
     <a class="product-card__title" href="{{ card_product.url }}">{{ card_product.title }}</a>
-    <span class="product-card__price">
-      {% if card_product.price_varies %}From {% endif %}{{ card_product.price | money }}
-    </span>
+    {% if card_product.metafields.custom.available_inseams != blank %}
+      <span class="product-card__meta">{{ card_product.metafields.custom.available_inseams.value | default: card_product.metafields.custom.available_inseams }}</span>
+    {% endif %}
+    <div class="product-card__price">{% if card_product.price_varies %}From {% endif %}{% render 'price-display', product: card_product, variant: first_variant %}</div>
   </div>
 </article>

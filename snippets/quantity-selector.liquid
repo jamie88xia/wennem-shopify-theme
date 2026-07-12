@@ -1,0 +1,11 @@
+{% liquid
+  assign input_name = name | default: 'quantity'
+  assign input_value = value | default: 1
+  assign label_text = label | default: 'Quantity'
+%}
+
+<div class="quantity" data-quantity>
+  <button type="button" data-quantity-button="minus" aria-label="Decrease {{ label_text | escape }}">-</button>
+  <input type="number" name="{{ input_name }}" value="{{ input_value }}" min="1" aria-label="{{ label_text | escape }}">
+  <button type="button" data-quantity-button="plus" aria-label="Increase {{ label_text | escape }}">+</button>
+</div>
