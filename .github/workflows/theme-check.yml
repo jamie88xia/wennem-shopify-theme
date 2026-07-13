@@ -1,0 +1,68 @@
+name: Theme Check
+
+on:
+  pull_request:
+    branches:
+      - staging
+      - main
+  push:
+    branches:
+      - staging
+      - main
+
+jobs:
+  theme-check:
+    name: Shopify theme check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out theme
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Shopify CLI
+        run: npm install -g @shopify/cli@latest
+
+      - name: Validate JSON and section schemas
+        run: |
+          node <<'NODE'
+          const fs = require("fs");
+          const path = require("path");
+
+          function walk(dir, out = []) {
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+              const full = path.join(dir, entry.name);
+              if (entry.isDirectory()) {
+                if ([".git", "node_modules"].includes(entry.name)) continue;
+                walk(full, out);
+              } else {
+                out.push(full);
+              }
+            }
+            return out;
+          }
+
+          const jsonFiles = walk(".").filter((file) => file.endsWith(".json"));
+
+          for (const file of jsonFiles) {
+            JSON.parse(fs.readFileSync(file, "utf8"));
+          }
+
+          for (const file of fs.readdirSync("sections")) {
+            if (!file.endsWith(".liquid")) continue;
+            const full = path.join("sections", file);
+            const text = fs.readFileSync(full, "utf8");
+            const match = text.match(/\{% schema %\}([\s\S]*?)\{% endschema %\}/);
+            if (match) JSON.parse(match[1]);
+          }
+          NODE
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Run Shopify theme check
+        run: shopify theme check

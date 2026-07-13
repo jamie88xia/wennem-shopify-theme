@@ -1,0 +1,22 @@
+name: Main PR Guard
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  require-staging-source:
+    name: Require staging source branch
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Reject non-staging PRs into main
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          if [ "$HEAD_REF" != "staging" ]; then
+            echo "Pull requests into main must come from staging. Current source branch: $HEAD_REF"
+            exit 1
+          fi
+          echo "PR source is staging."

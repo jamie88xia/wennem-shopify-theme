@@ -1,0 +1,39 @@
+name: Promote Staging To Main
+
+on:
+  push:
+    branches:
+      - staging
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  open-promotion-pr:
+    name: Open or reuse staging to main PR
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Open promotion PR if needed
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          existing_pr="$(gh pr list --repo "$REPO" --base main --head staging --state open --json number --jq '.[0].number')"
+
+          if [ -n "$existing_pr" ]; then
+            echo "Promotion PR already exists: #$existing_pr"
+            exit 0
+          fi
+
+          gh pr create \
+            --repo "$REPO" \
+            --base main \
+            --head staging \
+            --title "Promote staging to main" \
+            --body "Automated promotion PR from staging to main. Review the Shopify preview theme before merging; main is intended to back the live Shopify theme."

@@ -1,0 +1,60 @@
+#!/bin/sh
+set -eu
+
+echo "Running WENNEM pre-commit checks..."
+
+NODE_BIN="$(command -v node || zsh -ic 'command -v node' 2>/dev/null || true)"
+if [ -z "$NODE_BIN" ]; then
+  echo "Unable to find node. Install Node or make it available through your shell before committing."
+  exit 1
+fi
+
+"$NODE_BIN" - <<'NODE'
+const fs = require("fs");
+const path = require("path");
+
+function walk(dir, out = []) {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      if ([".git", "node_modules"].includes(entry.name)) continue;
+      walk(full, out);
+    } else {
+      out.push(full);
+    }
+  }
+  return out;
+}
+
+const jsonFiles = walk(".").filter((file) => file.endsWith(".json"));
+
+for (const file of jsonFiles) {
+  JSON.parse(fs.readFileSync(file, "utf8"));
+}
+
+let schemaCount = 0;
+for (const file of fs.readdirSync("sections")) {
+  if (!file.endsWith(".liquid")) continue;
+  const full = path.join("sections", file);
+  const text = fs.readFileSync(full, "utf8");
+  const match = text.match(/\{% schema %\}([\s\S]*?)\{% endschema %\}/);
+  if (match) {
+    JSON.parse(match[1]);
+    schemaCount += 1;
+  }
+}
+
+console.log(`Valid JSON: ${jsonFiles.length} files`);
+console.log(`Valid section schemas: ${schemaCount}`);
+NODE
+
+git diff --check
+
+SHOPIFY_BIN="$(command -v shopify || zsh -ic 'command -v shopify' 2>/dev/null || true)"
+if [ -n "$SHOPIFY_BIN" ]; then
+  "$SHOPIFY_BIN" theme check
+else
+  echo "Skipping shopify theme check: Shopify CLI not found on PATH."
+fi
+
+echo "Pre-commit checks passed."
