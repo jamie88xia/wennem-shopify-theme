@@ -1,0 +1,31 @@
+<section class="section page-editorial">
+  <div class="page-width page-editorial__grid">
+    <div>
+      <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      <h1>{{ section.settings.heading }}</h1>
+    </div>
+    <div class="page-editorial__copy">
+      <p>{{ section.settings.intro }}</p>
+      <h3>{{ section.settings.subheading }}</h3>
+      <p>{{ section.settings.body }}</p>
+      <p>{{ section.settings.signature }}</p>
+      <a class="button" href="{{ section.settings.button_link | default: '/pages/contact' }}">{{ section.settings.button_label }}</a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Story page",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "About" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "For women who want polish without compromise." },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "We believe women should not have to choose between comfort, performance, and style." },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Our founder" },
+    { "type": "textarea", "id": "body", "label": "Body", "default": "Created by a founder who could not find essentials that felt as considered as they looked, the brand is built around fit, fabric, and quiet confidence." },
+    { "type": "text", "id": "signature", "label": "Signature", "default": "Founder, WENNEM" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Contact us" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ]
+}
+{% endschema %}

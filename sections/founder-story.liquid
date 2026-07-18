@@ -1,0 +1,36 @@
+<section class="section founder-story">
+  <div class="page-width founder-story__grid">
+    <a class="founder-story__image fade-in" href="{{ section.settings.button_link | default: '/pages/our-story' }}" aria-label="{{ section.settings.button_label | escape }}">
+      {% if section.settings.image != blank %}
+        {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(min-width: 900px) 50vw, 100vw', alt: section.settings.heading }}
+      {% else %}
+        <img src="{{ 'wennem-hero-atelier.png' | asset_url }}" width="1536" height="1024" alt="{{ section.settings.heading | escape }}">
+      {% endif %}
+    </a>
+    <div class="founder-story__copy fade-in">
+      {% if section.settings.eyebrow != blank %}
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      <h2>{{ section.settings.heading }}</h2>
+      <p>{{ section.settings.copy }}</p>
+      {% if section.settings.button_label != blank %}
+        <a class="button" href="{{ section.settings.button_link | default: '/pages/our-story' }}">{{ section.settings.button_label }}</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Founder story",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our story" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "From city to studio." },
+    { "type": "textarea", "id": "copy", "label": "Copy", "default": "We design polished essentials for women who want comfort, structure, and restraint in the same piece." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Meet the founder" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "Founder story" }]
+}
+{% endschema %}

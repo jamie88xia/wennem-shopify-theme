@@ -5,12 +5,15 @@
     </nav>
     <h1>{{ collection.title }}</h1>
     {% if collection.description != blank %}<div>{{ collection.description }}</div>{% endif %}
-    <p class="product-count">{{ collection.products_count }} products</p>
+    <div class="collection-toolbar">
+      <p class="product-count">{{ collection.products_count }} products</p>
+      <a class="button" href="/collections/pre-order">Pre-order</a>
+    </div>
   </div>
 </section>
 
-<section class="page-width collection-layout">
-  <aside class="filter-panel" aria-label="Collection filters">
+<section class="page-width collection-layout collection-layout--minimal">
+  <aside class="filter-panel filter-panel--minimal" aria-label="Collection filters">
     <form>
       {% for filter in collection.filters %}
         <details class="filter-group" open>
@@ -38,7 +41,7 @@
           <div class="filter-values"><label><input type="checkbox"> Under $200</label><label><input type="checkbox"> $200-$400</label></div>
         </details>
       {% endfor %}
-      <button class="button button--full" type="submit">Apply filters</button>
+      <button class="button button--full" type="submit">Apply</button>
     </form>
   </aside>
 

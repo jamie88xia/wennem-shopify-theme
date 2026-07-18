@@ -64,17 +64,23 @@
 
       <div class="purchase-actions" aria-label="Purchase actions">
         <button class="button button--primary button--full" type="submit" {% unless current_variant.available %}disabled{% endunless %}>
-          {% if current_variant.available %}Add To Bag{% else %}Sold Out{% endif %}
+          {% if current_variant.available %}{{ section.settings.button_label }}{% else %}Sold Out{% endif %}
         </button>
         <a class="button button--full" href="/pages/size-guide">Size guide</a>
       </div>
     {% endform %}
 
+    <div class="product-benefits">
+      <p>{{ section.settings.benefit_1 }}</p>
+      <p>{{ section.settings.benefit_2 }}</p>
+      <p>{{ section.settings.benefit_3 }}</p>
+    </div>
+
     <p class="microcopy">
       {% if current_variant.inventory_quantity > 0 and current_variant.inventory_quantity < 8 %}
         Only {{ current_variant.inventory_quantity }} left.
       {% else %}
-        In stock. Estimated delivery in 3-6 business days.
+        {{ section.settings.shipping_message }}
       {% endif %}
     </p>
 
@@ -147,22 +153,30 @@
     </div>
 
     <div class="trust-badges">
-      <span>Secure checkout</span>
-      <span>Easy returns</span>
-      <span>Fit support</span>
+      <span>{{ section.settings.trust_1 }}</span>
+      <span>{{ section.settings.trust_2 }}</span>
+      <span>{{ section.settings.trust_3 }}</span>
     </div>
   </div>
 </section>
 
 <div class="sticky-atc">
-  <button class="button button--primary button--full" form="{{ product_form_id }}" type="submit">Add To Bag · {{ current_variant.price | money }}</button>
+  <button class="button button--primary button--full" form="{{ product_form_id }}" type="submit">{{ section.settings.button_label }} · {{ current_variant.price | money }}</button>
 </div>
 
 {% schema %}
 {
   "name": "Main product",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Essential wardrobe" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Pre-order" },
+    { "type": "text", "id": "button_label", "label": "Purchase button label", "default": "Pre-order" },
+    { "type": "text", "id": "shipping_message", "label": "Shipping message", "default": "Free U.S. shipping on orders over $200." },
+    { "type": "text", "id": "benefit_1", "label": "Benefit 1", "default": "Petite-first pattern" },
+    { "type": "text", "id": "benefit_2", "label": "Benefit 2", "default": "Clean tailored fit" },
+    { "type": "text", "id": "benefit_3", "label": "Benefit 3", "default": "Designed for all-day wear" },
+    { "type": "text", "id": "trust_1", "label": "Trust badge 1", "default": "Free U.S. shipping over $200" },
+    { "type": "text", "id": "trust_2", "label": "Trust badge 2", "default": "Pre-order support" },
+    { "type": "text", "id": "trust_3", "label": "Trust badge 3", "default": "Secure checkout" },
     { "type": "textarea", "id": "size_guide", "label": "Fit and sizing fallback", "default": "Choose your usual size for a close, tailored fit. Between sizes, size up for ease." },
     { "type": "text", "id": "fit_rating", "label": "Fit rating fallback", "default": "True to size" },
     { "type": "text", "id": "height_range", "label": "Recommended height fallback", "default": "5'4\" and under" },

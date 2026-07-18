@@ -1,0 +1,30 @@
+<section class="section preorder-band">
+  <div class="page-width preorder-inner">
+    <div>
+      {% if section.settings.eyebrow != blank %}
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      <h2>{{ section.settings.heading }}</h2>
+    </div>
+    <div>
+      <p>{{ section.settings.copy }}</p>
+      {% if section.settings.button_label != blank %}
+        <a class="button button--primary" href="{{ section.settings.button_link | default: '/collections/pre-order' }}">{{ section.settings.button_label }}</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Pre-order band",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Limited first collection" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Pre-order now open." },
+    { "type": "textarea", "id": "copy", "label": "Copy", "default": "A limited first run, produced in considered quantities and refined through real fit feedback." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop pre-order" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "Pre-order band" }]
+}
+{% endschema %}
