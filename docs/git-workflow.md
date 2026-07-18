@@ -1,5 +1,7 @@
 # Git Workflow
 
+Temporary push-test note. Remove after branch protection is confirmed.
+
 Recommended Shopify branch mapping:
 
 - `staging` -> unpublished Shopify preview theme
