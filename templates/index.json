@@ -3,11 +3,11 @@
     "hero": {
       "type": "editorial-hero",
       "settings": {
-        "eyebrow": "Petite workwear",
-        "heading": "Premium workwear designed for petite proportions.",
-        "copy": "WENNEM launches with two refined trouser styles made for shorter frames, with considered rises, inseams, and leg shapes from the first pattern.",
-        "primary_label": "Shop the trousers",
-        "secondary_label": "Understand the fit"
+        "eyebrow": "",
+        "heading": "Modern essentials for petite proportions.",
+        "copy": "Tailored pieces made to move beautifully from workday to weekend, designed from the first pattern for shorter frames.",
+        "primary_label": "Shop the first collection",
+        "secondary_label": ""
       }
     },
     "petite_promise": {
@@ -26,7 +26,13 @@
       "type": "shop-the-look"
     },
     "featured": {
-      "type": "featured-products"
+      "type": "featured-products",
+      "settings": {
+        "eyebrow": "First collection",
+        "heading": "Featured products",
+        "limit": 4,
+        "link_label": ""
+      }
     },
     "testimonials": {
       "type": "testimonials"
@@ -36,7 +42,24 @@
     },
     "newsletter": {
       "type": "newsletter"
+    },
+    "preorder": {
+      "type": "preorder-band",
+      "settings": {
+        "heading": "Pre-order now open.",
+        "copy": "A limited first run, produced in considered quantities and refined through real petite fit feedback.",
+        "button_label": "Shop pre-order"
+      }
     }
   },
-  "order": ["hero", "petite_promise", "featured", "fit_comparison", "story", "look", "collections", "testimonials", "instagram", "newsletter"]
+  "order": [
+    "hero",
+    "featured",
+    "preorder",
+    "petite_promise",
+    "fit_comparison",
+    "story",
+    "testimonials",
+    "newsletter"
+  ]
 }

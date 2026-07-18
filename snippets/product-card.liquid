@@ -12,8 +12,6 @@
       <span class="badge">Sale</span>
     {% endif %}
 
-    <button class="wishlist" type="button" aria-label="Add {{ card_product.title | escape }} to wishlist">♡</button>
-
     <a href="{{ card_product.url }}" aria-label="{{ card_product.title | escape }}">
       {% if card_product.featured_image %}
         {{ card_product.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 25vw, 50vw', alt: card_product.featured_image.alt | default: card_product.title }}
@@ -31,11 +29,11 @@
         {% form 'product', card_product, class: 'quick-add-form' %}
           <input type="hidden" name="id" value="{{ first_variant.id }}">
           <button class="button button--primary button--full" type="submit" {% unless first_variant.available %}disabled{% endunless %}>
-            {% if first_variant.available %}Quick Add{% else %}Sold Out{% endif %}
+            {% if first_variant.available %}Add{% else %}Sold Out{% endif %}
           </button>
         {% endform %}
       {% endif %}
-      <button class="button" type="button" data-quick-view>View</button>
+      <a class="button" href="{{ card_product.url }}">View product</a>
     </div>
   </div>
 

@@ -16,9 +16,9 @@
         {% for link in section.settings.shop_menu.links %}
           <a href="{{ link.url }}">{{ link.title }}</a>
         {% else %}
-          <a href="{{ routes.collections_url }}">New Arrivals</a>
-          <a href="{{ routes.collections_url }}">Best Sellers</a>
-          <a href="{{ routes.collections_url }}">Workwear</a>
+          <a href="/collections/products">Products</a>
+          <a href="/collections/pre-order">Pre-order</a>
+          <a href="/pages/our-story">Story</a>
         {% endfor %}
       </div>
     </div>
@@ -55,7 +55,7 @@
       "type": "textarea",
       "id": "copy",
       "label": "Newsletter copy",
-      "default": "Considered essentials, refined fit notes, and private collection previews."
+      "default": "Be the first to know about new arrivals, private pre-orders, and fit notes."
     },
     {
       "type": "link_list",
