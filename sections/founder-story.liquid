@@ -4,7 +4,7 @@
       {% if section.settings.image != blank %}
         {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(min-width: 900px) 50vw, 100vw', alt: section.settings.heading }}
       {% else %}
-        <img src="{{ 'wennem-hero-atelier.png' | asset_url }}" alt="{{ section.settings.heading | escape }}">
+        <img src="{{ 'wennem-hero-atelier.png' | asset_url }}" width="1536" height="1024" alt="{{ section.settings.heading | escape }}">
       {% endif %}
     </a>
     <div class="founder-story__copy fade-in">
