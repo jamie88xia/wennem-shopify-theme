@@ -9,10 +9,10 @@
         {% endfor %}
       {% else %}
         <a href="{{ routes.root_url }}">Home</a>
-        <a href="/collections/products">Products</a>
+        <a href="{{ routes.collections_url }}/products">Products</a>
         <a href="/pages/our-story">Story</a>
         <a href="/pages/contact">Contact</a>
-        <a href="/collections/pre-order">Pre-order</a>
+        <a href="{{ routes.collections_url }}/pre-order">Pre-order</a>
       {% endif %}
     </nav>
 
@@ -47,10 +47,10 @@
         {% endfor %}
       {% else %}
         <a href="{{ routes.root_url }}">Home</a>
-        <a href="/collections/products">Products</a>
+        <a href="{{ routes.collections_url }}/products">Products</a>
         <a href="/pages/our-story">Story</a>
         <a href="/pages/contact">Contact</a>
-        <a href="/collections/pre-order">Pre-order</a>
+        <a href="{{ routes.collections_url }}/pre-order">Pre-order</a>
         <a href="/pages/size-guide">Size guide</a>
         <a href="/pages/faq">FAQ</a>
       {% endif %}

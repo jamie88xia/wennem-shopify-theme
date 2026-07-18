@@ -16,14 +16,8 @@
     "fit_comparison": {
       "type": "fit-comparison"
     },
-    "collections": {
-      "type": "collection-tiles"
-    },
     "story": {
       "type": "editorial-story"
-    },
-    "look": {
-      "type": "shop-the-look"
     },
     "featured": {
       "type": "featured-products",
@@ -36,9 +30,6 @@
     },
     "testimonials": {
       "type": "testimonials"
-    },
-    "instagram": {
-      "type": "instagram-gallery"
     },
     "newsletter": {
       "type": "newsletter"

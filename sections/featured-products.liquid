@@ -16,10 +16,18 @@
           {% render 'product-card', product: product %}
         {% endfor %}
       {% else %}
-        {% for i in (1..4) %}
+        {% assign placeholder_images = 'wennem-product-black-placeholder.png,wennem-product-beige-placeholder.png,wennem-product-espresso-placeholder.png' | split: ',' %}
+        {% assign placeholder_titles = 'Petite Straight Trouser, Black|Petite Slim Trouser, Soft Beige|Petite Straight Trouser, Espresso' | split: '|' %}
+        {% for placeholder_image in placeholder_images %}
           <article class="product-card fade-in">
-            <div class="product-card__media"><img src="{{ 'wennem-hero.png' | asset_url }}" width="1693" height="929" alt="Editorial product placeholder"></div>
-            <div class="product-card__info"><span class="product-card__title">Tailored Essential {{ i }}</span><span class="product-card__price">$198</span></div>
+            <div class="product-card__media">
+              <img src="{{ placeholder_image | asset_url }}" width="1086" height="1448" alt="{{ placeholder_titles[forloop.index0] }}">
+            </div>
+            <div class="product-card__info">
+              <span class="product-card__title">{{ placeholder_titles[forloop.index0] }}</span>
+              <span class="product-card__meta">Petite proportions</span>
+              <span class="product-card__price">$198</span>
+            </div>
           </article>
         {% endfor %}
       {% endif %}

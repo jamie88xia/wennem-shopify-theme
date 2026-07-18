@@ -1,26 +1,80 @@
 {% liquid
   assign current_variant = product.selected_or_first_available_variant
   assign product_form_id = 'product-form-' | append: section.id
+  assign gallery_layout = section.settings.gallery_layout | default: 'mural'
 %}
 
-<section class="page-width product-page">
-  <div class="product-gallery">
-    {% for media in product.media %}
-      {% case media.media_type %}
-        {% when 'image' %}
-          {{ media | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 50vw, 100vw', alt: media.alt | default: product.title }}
-        {% when 'video' %}
-          {{ media | video_tag: controls: true, image_size: '1200x' }}
-        {% when 'external_video' %}
-          {{ media | external_video_tag }}
+<section class="page-width product-page product-page--{{ gallery_layout }}">
+  {% if gallery_layout == 'carousel' %}
+    <div class="product-gallery product-gallery--carousel" data-product-gallery>
+      <div class="product-gallery__viewport" aria-live="polite">
+        {% for media in product.media %}
+          <div class="product-gallery__slide{% if forloop.first %} is-active{% endif %}" data-gallery-slide data-gallery-index="{{ forloop.index0 }}"{% unless forloop.first %} hidden{% endunless %}>
+            {% case media.media_type %}
+              {% when 'image' %}
+                {{ media | image_url: width: 1200 | image_tag: loading: 'eager', sizes: '(min-width: 1000px) 44vw, 100vw', alt: media.alt | default: product.title }}
+              {% when 'video' %}
+                {{ media | video_tag: controls: true, image_size: '1200x' }}
+              {% when 'external_video' %}
+                {{ media | external_video_tag }}
+              {% else %}
+                {{ media | media_tag }}
+            {% endcase %}
+          </div>
         {% else %}
-          {{ media | media_tag }}
-      {% endcase %}
-    {% else %}
-      <img src="{{ 'wennem-hero.png' | asset_url }}" width="1693" height="929" alt="{{ product.title | escape }}">
-      <img src="{{ 'wennem-hero-studio.png' | asset_url }}" width="1536" height="1024" alt="{{ product.title | escape }}">
-    {% endfor %}
-  </div>
+          <div class="product-gallery__slide is-active" data-gallery-slide data-gallery-index="0">
+            <img src="{{ 'wennem-hero.png' | asset_url }}" width="1693" height="929" alt="{{ product.title | escape }}">
+          </div>
+          <div class="product-gallery__slide" data-gallery-slide data-gallery-index="1" hidden>
+            <img src="{{ 'wennem-hero-studio.png' | asset_url }}" width="1536" height="1024" alt="{{ product.title | escape }}">
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="product-gallery__thumbs" aria-label="Product media">
+        {% for media in product.media %}
+          <button class="product-gallery__thumb{% if forloop.first %} is-active{% endif %}" type="button" data-gallery-thumb data-gallery-index="{{ forloop.index0 }}" aria-label="Show media {{ forloop.index }}" aria-current="{% if forloop.first %}true{% else %}false{% endif %}">
+            {% if media.preview_image %}
+              {{ media.preview_image | image_url: width: 160 | image_tag: loading: 'lazy', sizes: '72px', alt: media.alt | default: product.title }}
+            {% else %}
+              <span>{{ forloop.index }}</span>
+            {% endif %}
+          </button>
+        {% else %}
+          <button class="product-gallery__thumb is-active" type="button" data-gallery-thumb data-gallery-index="0" aria-label="Show media 1" aria-current="true">
+            <img src="{{ 'wennem-hero.png' | asset_url }}" width="80" height="44" alt="{{ product.title | escape }}">
+          </button>
+          <button class="product-gallery__thumb" type="button" data-gallery-thumb data-gallery-index="1" aria-label="Show media 2" aria-current="false">
+            <img src="{{ 'wennem-hero-studio.png' | asset_url }}" width="80" height="53" alt="{{ product.title | escape }}">
+          </button>
+        {% endfor %}
+      </div>
+    </div>
+  {% else %}
+    <div class="product-gallery product-gallery--mural">
+      {% for media in product.media %}
+        <div class="product-gallery__tile">
+          {% case media.media_type %}
+            {% when 'image' %}
+              {{ media | image_url: width: 1100 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 34vw, 100vw', alt: media.alt | default: product.title }}
+            {% when 'video' %}
+              {{ media | video_tag: controls: true, image_size: '1000x' }}
+            {% when 'external_video' %}
+              {{ media | external_video_tag }}
+            {% else %}
+              {{ media | media_tag }}
+          {% endcase %}
+        </div>
+      {% else %}
+        <div class="product-gallery__tile">
+          <img src="{{ 'wennem-hero.png' | asset_url }}" width="1693" height="929" alt="{{ product.title | escape }}">
+        </div>
+        <div class="product-gallery__tile">
+          <img src="{{ 'wennem-hero-studio.png' | asset_url }}" width="1536" height="1024" alt="{{ product.title | escape }}">
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
 
   <div class="product-panel">
     {% render 'breadcrumbs', product: product, collection: collection %}
@@ -170,6 +224,16 @@
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Pre-order" },
     { "type": "text", "id": "button_label", "label": "Purchase button label", "default": "Pre-order" },
+    {
+      "type": "select",
+      "id": "gallery_layout",
+      "label": "Gallery layout",
+      "default": "mural",
+      "options": [
+        { "value": "mural", "label": "Mural" },
+        { "value": "carousel", "label": "Carousel" }
+      ]
+    },
     { "type": "text", "id": "shipping_message", "label": "Shipping message", "default": "Free U.S. shipping on orders over $200." },
     { "type": "text", "id": "benefit_1", "label": "Benefit 1", "default": "Petite-first pattern" },
     { "type": "text", "id": "benefit_2", "label": "Benefit 2", "default": "Clean tailored fit" },

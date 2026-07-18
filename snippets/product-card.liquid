@@ -16,7 +16,7 @@
       {% if card_product.featured_image %}
         {{ card_product.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 25vw, 50vw', alt: card_product.featured_image.alt | default: card_product.title }}
       {% else %}
-        {{ 'product-1' | placeholder_svg_tag }}
+        <img src="{{ 'wennem-product-black-placeholder.png' | asset_url }}" width="1086" height="1448" loading="lazy" alt="{{ card_product.title | default: 'WENNEM product placeholder' | escape }}">
       {% endif %}
 
       {% if second_image %}

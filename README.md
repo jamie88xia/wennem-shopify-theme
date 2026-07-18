@@ -9,7 +9,7 @@ Production-oriented Shopify Online Store 2.0 theme for WENNEM, a premium petite 
 - Petite-fit homepage sections for fit education and standard-versus-petite comparison.
 - Reusable snippets for product cards, price display, breadcrumbs, and quantity selection.
 - Product page with media gallery, video support, sticky purchase panel, variant selectors, quantity selector, petite fit summary, model reference, garment measurements, shipping estimate, inventory messaging, accordions, trust badges, mobile sticky add to cart, and recommendation sections.
-- Collection page with collection banner, product count, breadcrumbs, sticky filter panel, Shopify storefront filters, quick add, quick view, wishlist placeholder, hover image swap, and load-more pagination.
+- Collection page with collection banner, product count, breadcrumbs, sticky filter panel, Shopify storefront filters, compact add/view actions, hover image swap, and load-more pagination.
 - Merchant-editable colors, fonts, spacing, button radius, logo, announcement, menus, and product badges.
 
 ## Launch assumptions
@@ -43,6 +43,56 @@ Create product metafields in the `custom` namespace for the two launch trousers:
 - `available_inseams`
 
 These fields hide gracefully when empty and can be expanded into metaobjects later for size charts, fit guides, model profiles, and fabric stories.
+
+## Local testing
+
+From the theme folder:
+
+```bash
+cd /Users/bigxiazilla/Projects/WENNEM/wennem-shopify-theme
+```
+
+Install or update Shopify CLI if needed:
+
+```bash
+npm install -g @shopify/cli@latest
+```
+
+Log in and preview the theme locally against your Shopify store:
+
+```bash
+shopify theme dev --store YOUR-STORE.myshopify.com
+```
+
+Run Theme Check before pushing:
+
+```bash
+shopify theme check
+```
+
+Package an uploadable zip:
+
+```bash
+shopify theme package
+```
+
+Push to a development theme when you are ready to test in Shopify Admin:
+
+```bash
+shopify theme push --unpublished --store YOUR-STORE.myshopify.com
+```
+
+If this repo is connected through Shopify's GitHub integration, use the `staging` branch and PR flow rather than pushing directly to protected `main`.
+
+## Placeholder product images
+
+Generated safe placeholder product images live in `assets/`:
+
+- `wennem-product-black-placeholder.png`
+- `wennem-product-beige-placeholder.png`
+- `wennem-product-espresso-placeholder.png`
+
+These are original generated assets for theme mockups and should be replaced with owned WENNEM product photography before launch.
 
 ## Notes
 

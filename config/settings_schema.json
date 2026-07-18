@@ -73,7 +73,7 @@
         "type": "font_picker",
         "id": "heading_font",
         "label": "Heading font",
-        "default": "georgia_n4"
+        "default": "assistant_n4"
       },
       {
         "type": "font_picker",
@@ -155,7 +155,7 @@
           { "value": "4 / 5", "label": "Tall portrait" },
           { "value": "1 / 1", "label": "Square" }
         ],
-        "default": "3 / 4"
+        "default": "4 / 5"
       }
     ]
   },
