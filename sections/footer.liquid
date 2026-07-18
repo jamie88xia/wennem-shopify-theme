@@ -16,8 +16,8 @@
         {% for link in section.settings.shop_menu.links %}
           <a href="{{ link.url }}">{{ link.title }}</a>
         {% else %}
-          <a href="/collections/products">Products</a>
-          <a href="/collections/pre-order">Pre-order</a>
+          <a href="{{ routes.collections_url }}/products">Products</a>
+          <a href="{{ routes.collections_url }}/pre-order">Pre-order</a>
           <a href="/pages/our-story">Story</a>
         {% endfor %}
       </div>

@@ -104,6 +104,31 @@ document.querySelectorAll(selectors.closeQuickView).forEach((button) => {
   });
 });
 
+
+document.querySelectorAll("[data-product-gallery]").forEach((gallery) => {
+  const slides = [...gallery.querySelectorAll("[data-gallery-slide]")];
+  const thumbs = [...gallery.querySelectorAll("[data-gallery-thumb]")];
+  if (slides.length <= 1) return;
+
+  function showSlide(index) {
+    slides.forEach((slide) => {
+      const isActive = slide.dataset.galleryIndex === index;
+      slide.classList.toggle("is-active", isActive);
+      slide.toggleAttribute("hidden", !isActive);
+    });
+
+    thumbs.forEach((thumb) => {
+      const isActive = thumb.dataset.galleryIndex === index;
+      thumb.classList.toggle("is-active", isActive);
+      thumb.setAttribute("aria-current", isActive ? "true" : "false");
+    });
+  }
+
+  thumbs.forEach((thumb) => {
+    thumb.addEventListener("click", () => showSlide(thumb.dataset.galleryIndex));
+  });
+});
+
 document.querySelectorAll(selectors.quantity).forEach((quantity) => {
   const input = quantity.querySelector("input");
   quantity.querySelectorAll("button").forEach((button) => {

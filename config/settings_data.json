@@ -12,7 +12,7 @@
     "heading_scale": 100,
     "button_radius": 2,
     "button_style": "solid",
-    "product_card_ratio": "3 / 4",
+    "product_card_ratio": "4 / 5",
     "show_product_badges": true,
     "free_shipping_threshold": 25000
   }

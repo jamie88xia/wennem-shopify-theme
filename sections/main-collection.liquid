@@ -7,7 +7,7 @@
     {% if collection.description != blank %}<div>{{ collection.description }}</div>{% endif %}
     <div class="collection-toolbar">
       <p class="product-count">{{ collection.products_count }} products</p>
-      <a class="button" href="/collections/pre-order">Pre-order</a>
+      <a class="button" href="{{ routes.collections_url }}/pre-order">Pre-order</a>
     </div>
   </div>
 </section>
