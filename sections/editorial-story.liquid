@@ -1,13 +1,13 @@
-<section class="section">
+<section class="section editorial-story-section">
   <div class="page-width split-editorial">
-    <div class="fade-in">
+    <div class="split-editorial__media fade-in">
       {% if section.settings.image != blank %}
         {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 58vw, 100vw', alt: section.settings.heading }}
       {% else %}
         <img src="{{ 'wennem-hero-atelier.png' | asset_url }}" width="1536" height="1024" alt="{{ section.settings.heading | escape }}">
       {% endif %}
     </div>
-    <div class="fade-in">
+    <div class="split-editorial__copy fade-in">
       <p class="eyebrow">{{ section.settings.eyebrow }}</p>
       <h2>{{ section.settings.heading }}</h2>
       <p>{{ section.settings.copy }}</p>
