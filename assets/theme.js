@@ -129,6 +129,73 @@ document.querySelectorAll("[data-product-gallery]").forEach((gallery) => {
   });
 });
 
+
+document.querySelectorAll("[data-story-slider]").forEach((slider) => {
+  const slides = [...slider.querySelectorAll("[data-story-slide]")];
+  const dots = [...slider.querySelectorAll("[data-story-dot]")];
+  const previous = slider.querySelector("[data-story-prev]");
+  const next = slider.querySelector("[data-story-next]");
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const interval = Number(slider.dataset.interval || 10000);
+  let activeIndex = Math.max(0, slides.findIndex((slide) => slide.classList.contains("is-active")));
+  let timer;
+
+  if (slides.length <= 1) return;
+
+  function showSlide(index) {
+    activeIndex = (index + slides.length) % slides.length;
+
+    slides.forEach((slide, slideIndex) => {
+      const isActive = slideIndex === activeIndex;
+      slide.classList.toggle("is-active", isActive);
+      slide.toggleAttribute("hidden", !isActive);
+    });
+
+    dots.forEach((dot, dotIndex) => {
+      const isActive = dotIndex === activeIndex;
+      dot.classList.toggle("is-active", isActive);
+      dot.setAttribute("aria-current", isActive ? "true" : "false");
+    });
+  }
+
+  function stopTimer() {
+    window.clearInterval(timer);
+  }
+
+  function startTimer() {
+    if (prefersReducedMotion) return;
+    stopTimer();
+    timer = window.setInterval(() => showSlide(activeIndex + 1), interval);
+  }
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener("click", () => {
+      showSlide(index);
+      startTimer();
+    });
+  });
+
+  if (previous) {
+    previous.addEventListener("click", () => {
+      showSlide(activeIndex - 1);
+      startTimer();
+    });
+  }
+
+  if (next) {
+    next.addEventListener("click", () => {
+      showSlide(activeIndex + 1);
+      startTimer();
+    });
+  }
+
+  slider.addEventListener("mouseenter", stopTimer);
+  slider.addEventListener("mouseleave", startTimer);
+  slider.addEventListener("focusin", stopTimer);
+  slider.addEventListener("focusout", startTimer);
+  startTimer();
+});
+
 document.querySelectorAll(selectors.quantity).forEach((quantity) => {
   const input = quantity.querySelector("input");
   quantity.querySelectorAll("button").forEach((button) => {

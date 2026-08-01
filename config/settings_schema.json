@@ -1,5 +1,13 @@
 [
   {
+    "name": "theme_info",
+    "theme_name": "WENNEM",
+    "theme_version": "1.0.0",
+    "theme_author": "WENNEM",
+    "theme_documentation_url": "https://wennem.myshopify.com",
+    "theme_support_url": "https://wennem.myshopify.com/pages/contact"
+  },
+  {
     "name": "Brand",
     "settings": [
       {
@@ -141,8 +149,14 @@
         "id": "button_style",
         "label": "Button style",
         "options": [
-          { "value": "solid", "label": "Solid primary" },
-          { "value": "outline", "label": "Outline primary" }
+          {
+            "value": "solid",
+            "label": "Solid primary"
+          },
+          {
+            "value": "outline",
+            "label": "Outline primary"
+          }
         ],
         "default": "solid"
       },
@@ -151,9 +165,18 @@
         "id": "product_card_ratio",
         "label": "Product image ratio",
         "options": [
-          { "value": "3 / 4", "label": "Portrait" },
-          { "value": "4 / 5", "label": "Tall portrait" },
-          { "value": "1 / 1", "label": "Square" }
+          {
+            "value": "3 / 4",
+            "label": "Portrait"
+          },
+          {
+            "value": "4 / 5",
+            "label": "Tall portrait"
+          },
+          {
+            "value": "1 / 1",
+            "label": "Square"
+          }
         ],
         "default": "4 / 5"
       }
