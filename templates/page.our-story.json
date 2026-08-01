@@ -1,11 +1,72 @@
 {
   "sections": {
     "main": {
-      "type": "page-story"
+      "type": "page-story",
+      "blocks": {
+        "origin": {
+          "type": "chapter",
+          "settings": {
+            "chapter_title": "The Origin",
+            "heading": "Growing up, going back to Taiwan always meant one thing: shopping.",
+            "body": "Every trip home led me back to the same neighborhoods: street after street of clothing stores, styles from Taiwan, Korea, Japan, and China all in one place. The fit was right, the quality was there, and I felt confident in what I was wearing. My friends in the States always noticed when I came back. Where did you get that? I loved that question. I still do."
+          }
+        },
+        "becoming": {
+          "type": "chapter",
+          "settings": {
+            "chapter_title": "The Becoming",
+            "heading": "After college I moved to New York, and I started paying attention to how I showed up.",
+            "body": "I was commuting, watching how women in the city dressed, and finding my own language for style: clean, intentional, effortless. As my career moved faster, getting dressed became less about impressing anyone and more about feeling like myself when I walked into a room. But I could not reliably find that here. Too often, the pieces I wanted needed tailoring, sat unworn, or came close without ever feeling right."
+          }
+        },
+        "frustration": {
+          "type": "chapter",
+          "settings": {
+            "chapter_title": "The Frustration",
+            "heading": "At some point I realized I had accepted that clothes here wouldn\u2019t really fit me.",
+            "body": "That is a strange thing to accept, but most women I know have done some version of it. You hem the trousers. You return three sizes and keep none. You choose the pair that fits your hips and deal with the waist being wrong. The frustrating part is knowing what it is supposed to feel like. I had worn clothes that actually fit. I knew the difference."
+          }
+        },
+        "catalyst": {
+          "type": "chapter",
+          "settings": {
+            "chapter_title": "The Catalyst",
+            "heading": "In January 2026, I had my daughter.",
+            "body": "Those first weeks of maternity leave rearranged me. I was in one of the least confident seasons of my own body image, learning what it meant to be a mother and finding my footing again. Somewhere in that space, something quietly ignited: the desire to build something. Not just for me, but for her. The idea had been with me for years. Maternity leave gave me the room to finally ask why no one had solved it."
+          }
+        },
+        "moment": {
+          "type": "chapter",
+          "settings": {
+            "chapter_title": "The Moment",
+            "heading": "One afternoon I found three pairs of trousers I could never get rid of.",
+            "body": "I had worn them for years: on work trips, into big meetings, on weekends when I wanted to feel like myself. People always asked about them. They came from Asia, and standing in my closet, I knew I was not going to find anything like them here. I brought the idea to five people I trusted, each with a different strength across engineering, finance, operations, marketing, and logistics. We all saw the gap. We decided to build it together."
+          }
+        },
+        "brand": {
+          "type": "chapter",
+          "settings": {
+            "chapter_title": "The Brand",
+            "heading": "WENNEM is for women who know exactly what\u2019s missing.",
+            "body": "We are starting with trousers because that is where the problem is most obvious: waist and hips that fit together, inseams that exist from day one, fabrics that hold up, and sizing consistent enough to come back to. We are building from Houston and Austin, sourcing from regions that have been getting this right for a long time, and bringing that standard to women who have been waiting for it here. You should not have to settle for almost. That is the whole point."
+          }
+        }
+      },
+      "block_order": [
+        "origin",
+        "becoming",
+        "frustration",
+        "catalyst",
+        "moment",
+        "brand"
+      ]
     },
     "newsletter": {
       "type": "newsletter"
     }
   },
-  "order": ["main", "newsletter"]
+  "order": [
+    "main",
+    "newsletter"
+  ]
 }
