@@ -3,13 +3,6 @@
     "main": {
       "type": "main-product"
     },
-    "complete": {
-      "type": "featured-products",
-      "settings": {
-        "eyebrow": "Complete the look",
-        "heading": "Pieces to wear with it."
-      }
-    },
     "recent": {
       "type": "featured-products",
       "settings": {
@@ -18,5 +11,5 @@
       }
     }
   },
-  "order": ["main", "complete", "recent"]
+  "order": ["main", "recent"]
 }

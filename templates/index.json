@@ -10,12 +10,6 @@
         "secondary_label": ""
       }
     },
-    "petite_promise": {
-      "type": "petite-fit-promise"
-    },
-    "fit_comparison": {
-      "type": "fit-comparison"
-    },
     "story": {
       "type": "editorial-story"
     },
@@ -23,34 +17,28 @@
       "type": "featured-products",
       "settings": {
         "eyebrow": "First collection",
-        "heading": "Featured products",
+        "heading": "The first WENNEM trouser.",
+        "copy": "One precise silhouette in considered neutrals, designed for petite proportions from the first pattern.",
+        "layout_style": "split",
+        "collection": "pre-order",
         "limit": 4,
-        "link_label": ""
+        "link_label": "",
+        "link": "/collections/pre-order",
+        "product_eyebrow": "Pre-order now open",
+        "product_copy": "",
+        "show_button": true,
+        "product_button_label": "Shop pre-order",
+        "show_price": true
       }
-    },
-    "testimonials": {
-      "type": "testimonials"
     },
     "newsletter": {
       "type": "newsletter"
-    },
-    "preorder": {
-      "type": "preorder-band",
-      "settings": {
-        "heading": "Pre-order now open.",
-        "copy": "A limited first run, produced in considered quantities and refined through real petite fit feedback.",
-        "button_label": "Shop pre-order"
-      }
     }
   },
   "order": [
     "hero",
     "featured",
-    "preorder",
-    "petite_promise",
-    "fit_comparison",
     "story",
-    "testimonials",
     "newsletter"
   ]
 }

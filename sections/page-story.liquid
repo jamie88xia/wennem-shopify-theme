@@ -70,7 +70,9 @@
           <button class="story-slider__arrow" type="button" data-story-prev aria-label="Previous chapter">‹</button>
           <div class="story-slider__dots">
             {% for block in section.blocks %}
-              <button class="story-slider__dot{% if forloop.first %} is-active{% endif %}" type="button" data-story-dot data-story-index="{{ forloop.index0 }}" aria-label="Show chapter {{ forloop.index }}" aria-current="{% if forloop.first %}true{% else %}false{% endif %}">{{ forloop.index }}</button>
+              <button class="story-slider__dot{% if forloop.first %} is-active{% endif %}" type="button" data-story-dot data-story-index="{{ forloop.index0 }}" aria-label="Show chapter {{ forloop.index }}" aria-current="{% if forloop.first %}true{% else %}false{% endif %}">
+                <span class="visually-hidden">Chapter {{ forloop.index }}</span>
+              </button>
             {% endfor %}
           </div>
           <button class="story-slider__arrow" type="button" data-story-next aria-label="Next chapter">›</button>
