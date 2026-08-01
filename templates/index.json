@@ -11,7 +11,10 @@
       }
     },
     "story": {
-      "type": "editorial-story"
+      "type": "editorial-story",
+      "settings": {
+        "button_link": "/pages/our-story"
+      }
     },
     "featured": {
       "type": "featured-products",
