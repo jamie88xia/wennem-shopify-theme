@@ -1,7 +1,39 @@
 {
   "sections": {
     "main": {
-      "type": "size-guide"
+      "type": "size-guide",
+      "blocks": {
+        "measurement-xxs": { "type": "measurement_row", "settings": { "us_size": "XXS", "waist": "25.1\"", "hip": "34.1\"", "front_rise": "10.4\"", "back_rise": "14.3\"", "leg_opening": "8.5\"" } },
+        "measurement-xs": { "type": "measurement_row", "settings": { "us_size": "XS", "waist": "26.4\"", "hip": "35.2\"", "front_rise": "10.6\"", "back_rise": "14.6\"", "leg_opening": "8.7\"" } },
+        "measurement-s": { "type": "measurement_row", "settings": { "us_size": "S", "waist": "27.6\"", "hip": "36.4\"", "front_rise": "10.8\"", "back_rise": "14.8\"", "leg_opening": "8.8\"" } },
+        "measurement-m": { "type": "measurement_row", "settings": { "us_size": "M", "waist": "28.9\"", "hip": "37.6\"", "front_rise": "11.0\"", "back_rise": "15.0\"", "leg_opening": "9.0\"" } },
+        "measurement-l": { "type": "measurement_row", "settings": { "us_size": "L", "waist": "31.4\"", "hip": "40.0\"", "front_rise": "11.4\"", "back_rise": "15.5\"", "leg_opening": "9.2\"" } },
+        "measurement-xl": { "type": "measurement_row", "settings": { "us_size": "XL", "waist": "32.7\"", "hip": "41.1\"", "front_rise": "11.6\"", "back_rise": "15.7\"", "leg_opening": "9.3\"" } },
+        "conversion-xxs": { "type": "conversion_row", "settings": { "us_size": "XXS", "boutique_size": "26" } },
+        "conversion-xs": { "type": "conversion_row", "settings": { "us_size": "XS", "boutique_size": "27" } },
+        "conversion-s": { "type": "conversion_row", "settings": { "us_size": "S", "boutique_size": "28" } },
+        "conversion-m": { "type": "conversion_row", "settings": { "us_size": "M", "boutique_size": "29" } },
+        "conversion-l": { "type": "conversion_row", "settings": { "us_size": "L", "boutique_size": "31" } },
+        "conversion-xl": { "type": "conversion_row", "settings": { "us_size": "XL", "boutique_size": "32" } },
+        "inseam-petite": { "type": "inseam_row", "settings": { "length_label": "Petite", "inseam_in": "~27.5\"", "inseam_cm": "~70 cm" } },
+        "inseam-tall": { "type": "inseam_row", "settings": { "length_label": "Tall", "inseam_in": "~29.5\"", "inseam_cm": "~75 cm" } }
+      },
+      "block_order": [
+        "measurement-xxs",
+        "measurement-xs",
+        "measurement-s",
+        "measurement-m",
+        "measurement-l",
+        "measurement-xl",
+        "conversion-xxs",
+        "conversion-xs",
+        "conversion-s",
+        "conversion-m",
+        "conversion-l",
+        "conversion-xl",
+        "inseam-petite",
+        "inseam-tall"
+      ]
     }
   },
   "order": ["main"]

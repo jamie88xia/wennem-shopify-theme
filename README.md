@@ -1,6 +1,6 @@
 # WENNEM Shopify Theme
 
-Production-oriented Shopify Online Store 2.0 theme for WENNEM, a premium petite workwear brand launching with two focused trouser styles.
+Production-oriented Shopify Online Store 2.0 theme for WENNEM, a premium trouser brand for petite body types — with a specific focus on petite Asian (East Asian) proportions — launching with two focused trouser styles.
 
 ## Included
 
@@ -43,6 +43,8 @@ Create product metafields in the `custom` namespace for the two launch trousers:
 - `available_inseams`
 
 These fields hide gracefully when empty and can be expanded into metaobjects later for size charts, fit guides, model profiles, and fabric stories.
+
+`fit_summary`, `recommended_height_range`, `rise`, and `inseam` should be written against petite Asian (East Asian) proportions specifically — shorter rise and inseam than standard petite sizing typically assumes — not generic petite sizing.
 
 ## Local testing
 

@@ -1,0 +1,70 @@
+{% if settings.promo_enabled %}
+  {% form 'customer', class: 'signup-popup-form' %}
+    <aside
+      class="signup-popup"
+      data-signup-popup
+      hidden
+      aria-label="Signup popup"
+      role="dialog"
+      aria-modal="true"
+      data-posted="{% if form.posted_successfully? %}true{% else %}false{% endif %}"
+      data-delay-seconds="{{ section.settings.delay_seconds }}"
+      data-dismiss-days="{{ section.settings.dismiss_days }}"
+    >
+      <div class="signup-popup-backdrop" data-layer-backdrop></div>
+      <div class="signup-popup-panel">
+        <button class="icon-button" type="button" data-signup-popup-close aria-label="Close">×</button>
+
+        {% if section.settings.image != blank %}
+          <div class="signup-popup-media">
+            {{ section.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 700px) 40vw, 100vw', alt: settings.promo_heading }}
+          </div>
+        {% endif %}
+
+        <div class="signup-popup-body">
+          {% if form.posted_successfully? %}
+            <p class="form-message" tabindex="-1">
+              {{ settings.promo_success_message }}
+              {% if settings.promo_discount_code != blank %}
+                <strong class="signup-popup-code">{{ settings.promo_discount_code }}</strong>
+              {% endif %}
+            </p>
+          {% else %}
+            {% if form.errors %}
+              <div class="form-message form-message--error">{{ form.errors | default_errors }}</div>
+            {% endif %}
+
+            <h3>{{ settings.promo_heading }}</h3>
+            <p>{{ settings.promo_body }}</p>
+
+            <input type="hidden" name="contact[tags]" value="{{ section.settings.tags }}">
+            <label class="visually-hidden" for="signup-popup-email">Email</label>
+            <input
+              id="signup-popup-email"
+              type="email"
+              name="contact[email]"
+              autocomplete="email"
+              placeholder="Email address"
+              required
+            >
+            <button class="button button--primary button--full" type="submit">{{ section.settings.button_label }}</button>
+          {% endif %}
+        </div>
+      </div>
+    </aside>
+  {% endform %}
+{% endif %}
+
+{% schema %}
+{
+  "name": "Signup popup",
+  "settings": [
+    { "type": "paragraph", "content": "Headline, body, discount code, and enable/disable live in Theme Settings > Promotion, shared with the shop page banner." },
+    { "type": "number", "id": "delay_seconds", "label": "Delay (seconds)", "default": 6 },
+    { "type": "number", "id": "dismiss_days", "label": "Dismiss for (days)", "default": 7 },
+    { "type": "text", "id": "button_label", "label": "Submit button label", "default": "Get my code" },
+    { "type": "text", "id": "tags", "label": "Customer tags", "default": "newsletter,pre-launch,discount-popup" },
+    { "type": "image_picker", "id": "image", "label": "Image" }
+  ]
+}
+{% endschema %}

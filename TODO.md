@@ -4,7 +4,9 @@ This is the running implementation and product-strategy TODO for the WENNEM Shop
 
 ## Current Context
 
-WENNEM is a premium women's petite apparel brand, currently focused on a small pre-launch/pre-order catalog. The visual direction is minimal, editorial, and luxury-adjacent, with references including DRESSAGE, Aritzia, COS, Toteme, The Row, and Khaite. The theme is a Shopify Online Store 2.0 theme using Liquid, JSON templates, CSS, and small vanilla JavaScript.
+WENNEM is a premium women's petite apparel brand, with a specific focus on petite Asian (East Asian) body proportions — shorter rise and inseam than standard petite sizing typically assumes. It is currently focused on a small pre-launch/pre-order catalog, heading into soft launch. The visual direction is minimal, editorial, and luxury-adjacent, with references including DRESSAGE, Aritzia, COS, Toteme, The Row, and Khaite. The theme is a Shopify Online Store 2.0 theme using Liquid, JSON templates, CSS, and small vanilla JavaScript.
+
+Product and lifestyle images currently in the repo are stock/placeholder, not owned photography — don't over-invest in image-specific polish that real photography would invalidate.
 
 Current repo path used during development:
 
@@ -37,80 +39,24 @@ The working branch has been `staging`. Main may be protected, so use PRs instead
 
 ## High-Priority Pre-Launch Enhancements
 
-### 1. Add Shopify-native pre-launch email capture
+### 1. Pre-launch email capture — done
 
-Goal: Collect emails before launch/pre-order volume ramps up.
+Implemented by enhancing the two existing customer-form spots (`sections/newsletter.liquid` on the homepage, and the form embedded in `sections/footer.liquid`) rather than adding a third competing form:
 
-Recommended implementation:
+- Hidden `contact[tags]` value now reads from a merchant-editable `tags` setting on each section (default `newsletter,pre-launch,launch-list`).
+- Both forms show a real success message (`form.posted_successfully?`) or error state (`form.errors`), matching the pattern already used in `sections/contact-form.liquid`, instead of silently reloading with no feedback.
 
-- Build a reusable section, likely `sections/prelaunch-signup.liquid`.
-- Use Shopify's customer form so signups become Shopify Customer records.
-- Add hidden tags such as `newsletter`, `pre-launch`, and `launch-list`.
-- Add the section to the homepage and potentially the pre-order collection page.
-- Make copy, CTA, tags, and success message editable in the Theme Editor.
+Still open: exact incentive beyond early access (a discount is handled separately by the popup below), and whether a signup should also appear on the pre-order collection page.
 
-Useful Liquid pattern:
+### 2. Discount-code signup popup/modal — built, ships disabled
 
-```liquid
-{% form 'customer' %}
-  <input type="hidden" name="contact[tags]" value="newsletter,pre-launch,launch-list">
-  <input type="email" name="contact[email]" required>
-  <button type="submit">Join the list</button>
-{% endform %}
-```
+Built as `sections/signup-popup.liquid`, rendered globally via `layout/theme.liquid`, with supporting JS in `assets/theme.js` and styles in `assets/theme.css`.
 
-Where emails go in Shopify:
-
-- Shopify Admin > Customers
-- Customers should be segmentable by tags and email subscription state.
-- Later, connect Shopify Email, Klaviyo, Mailchimp, or Shopify Flow for automated launch messages.
-
-Open decisions:
-
-- Exact incentive: early access only vs. discount code.
-- Whether signup appears in the hero, below hero, pre-order collection, footer, or all of the above.
-- Consent/fine print wording.
-
-### 2. Add discount-code signup popup/modal
-
-Goal: Capture visitors who are not ready to pre-order and give them a reason to join the list.
-
-Recommended implementation:
-
-- Build a global popup section/snippet, likely `sections/signup-popup.liquid` plus small JS in `assets/theme.js`.
-- Use Shopify's customer form with tags such as `newsletter`, `pre-launch`, and `discount-popup`.
-- Store dismissal/submission in `localStorage` so it does not keep showing every visit.
-- Default behavior: show after 4-6 seconds, or after scroll intent. Keep it subtle.
-- On mobile, render as a bottom sheet rather than a large centered modal.
-
-Suggested copy direction:
-
-```text
-Stay in the loop
-Join the WENNEM list for first access to the collection and 10% off your first order.
-```
-
-Suggested simple discount approach:
-
-- Create one Shopify discount code manually, for example `WENNEM10`.
-- After signup, show a success state with the code.
-- Later, replace this with an email automation so the code is delivered by email.
-
-Theme Editor settings to include:
-
-- Enable/disable popup.
-- Delay in seconds.
-- Dismissal duration in days.
-- Headline, body, CTA, success message, discount code.
-- Customer tags.
-- Optional image.
-
-Accessibility requirements:
-
-- Focus trap while modal is open.
-- Escape key closes modal.
-- Close button with visible accessible label.
-- Do not open repeatedly after dismissal.
+- Desktop: centered modal. Mobile (≤700px): bottom sheet, not a centered box.
+- Shows after a configurable delay (`delay_seconds`, default 6s); dismissal/submission is remembered in `localStorage` for `dismiss_days` (default 7) so it doesn't reappear every visit.
+- Accessible: focus trapped while open, Escape closes it, visible close button label, reuses the theme's existing `openLayer`/`closeLayer`/`trapFocus` overlay utilities (the same ones powering the cart drawer and search).
+- **Ships with `enable: false` and `discount_code` blank** — there is no real discount code decided yet. A merchant must turn this on and fill in a real code before it goes live. Do not set a placeholder code as the default.
+- Known Shopify platform limitation: `form.posted_successfully?` is shared across every `{% form 'customer' %}` on a page, so submitting the plain footer/newsletter form would otherwise also flip this popup's "just submitted" state and force it open showing the discount code to someone who never touched it. Worked around client-side via a `sessionStorage` flag set on this form's own `submit` event, checked against `data-posted` on load — only a genuine popup submission force-opens it with the success/discount content. Residual minor limitation: the popup's hidden success markup (including the discount code) is still present in the page's HTML source after *any* customer-form submission on the page, since Liquid itself can't disambiguate which form was submitted — not visually exposed, but visible via view-source. Worth a fuller fix (e.g. consolidating to one form, or per-form id + redirect-hash matching) if that residual exposure matters once a real code is live.
 
 ### 3. Add or polish the Our Story page
 

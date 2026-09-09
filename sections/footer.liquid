@@ -4,9 +4,16 @@
       <h2>{{ settings.brand_name | default: shop.name }}</h2>
       <p>{{ section.settings.copy }}</p>
       {% form 'customer', class: 'newsletter-form' %}
-        <input type="hidden" name="contact[tags]" value="newsletter">
-        <input type="email" name="contact[email]" autocomplete="email" placeholder="Email address" aria-label="Email address" required>
-        <button type="submit">Join</button>
+        {% if form.posted_successfully? %}
+          <p class="form-message" tabindex="-1">{{ section.settings.success_message }}</p>
+        {% else %}
+          {% if form.errors %}
+            <div class="form-message form-message--error">{{ form.errors | default_errors }}</div>
+          {% endif %}
+          <input type="hidden" name="contact[tags]" value="{{ section.settings.tags }}">
+          <input type="email" name="contact[email]" autocomplete="email" placeholder="Email address" aria-label="Email address" required>
+          <button type="submit">Join</button>
+        {% endif %}
       {% endform %}
     </div>
 
@@ -56,6 +63,18 @@
       "id": "copy",
       "label": "Newsletter copy",
       "default": "Be the first to know about new arrivals, private pre-orders, and fit notes."
+    },
+    {
+      "type": "text",
+      "id": "tags",
+      "label": "Customer tags",
+      "default": "newsletter,pre-launch,launch-list"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Thank you. You're on the list."
     },
     {
       "type": "link_list",

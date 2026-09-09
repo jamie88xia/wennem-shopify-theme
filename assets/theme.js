@@ -13,6 +13,11 @@ const selectors = {
   quickViewOverlay: "[data-quick-view-overlay]",
   quantity: "[data-quantity]",
   quickAdd: ".quick-add-form",
+  signupPopup: "[data-signup-popup]",
+  closeSignupPopup: "[data-signup-popup-close]",
+  openSignupPopup: "[data-open-signup-popup]",
+  zoomOverlay: "[data-zoom-overlay]",
+  closeZoom: "[data-zoom-close]",
 };
 
 function trapEscape(element, close) {
@@ -62,14 +67,43 @@ const cartDrawer = document.querySelector(selectors.cartDrawer);
 const searchOverlay = document.querySelector(selectors.searchOverlay);
 const quickViewOverlay = document.querySelector(selectors.quickViewOverlay);
 const mobileMenu = document.querySelector(selectors.mobileMenu);
+const signupPopup = document.querySelector(selectors.signupPopup);
+const zoomOverlay = document.querySelector(selectors.zoomOverlay);
 
 document.querySelectorAll(selectors.openCart).forEach((button) => {
   button.addEventListener("click", () => openLayer(cartDrawer));
 });
 
-document.querySelectorAll(selectors.closeCart).forEach((button) => {
-  button.addEventListener("click", () => closeLayer(cartDrawer));
-});
+// Delegated so close still works after refreshCart() replaces the drawer's markup.
+if (cartDrawer) {
+  cartDrawer.addEventListener("click", (event) => {
+    if (event.target.closest(selectors.closeCart)) closeLayer(cartDrawer);
+  });
+}
+
+async function refreshCart() {
+  if (!cartDrawer || !window.fetch) return;
+
+  const root = window.Shopify.routes.root;
+  const [sectionResponse, cartResponse] = await Promise.all([
+    fetch(`${root}?sections=cart-drawer`),
+    fetch(`${root}cart.js`),
+  ]);
+
+  const sections = await sectionResponse.json();
+  const cart = await cartResponse.json();
+
+  const markup = sections["cart-drawer"];
+  if (markup) {
+    const fresh = new DOMParser().parseFromString(markup, "text/html").querySelector(selectors.cartDrawer);
+    if (fresh) cartDrawer.innerHTML = fresh.innerHTML;
+  }
+
+  document.querySelectorAll("[data-cart-count]").forEach((node) => {
+    node.textContent = cart.item_count;
+    node.toggleAttribute("hidden", cart.item_count === 0);
+  });
+}
 
 document.querySelectorAll(selectors.openSearch).forEach((button) => {
   button.addEventListener("click", () => openLayer(searchOverlay));
@@ -95,7 +129,11 @@ document.querySelectorAll(selectors.closeQuickView).forEach((button) => {
   button.addEventListener("click", () => closeLayer(quickViewOverlay));
 });
 
-[cartDrawer, searchOverlay, quickViewOverlay, mobileMenu].forEach((layer) => {
+document.querySelectorAll(selectors.closeZoom).forEach((button) => {
+  button.addEventListener("click", () => closeLayer(zoomOverlay));
+});
+
+[cartDrawer, searchOverlay, quickViewOverlay, mobileMenu, signupPopup, zoomOverlay].forEach((layer) => {
   if (!layer) return;
   trapEscape(layer, () => closeLayer(layer));
   trapFocus(layer, () => closeLayer(layer));
@@ -103,6 +141,62 @@ document.querySelectorAll(selectors.closeQuickView).forEach((button) => {
     if (event.target.matches("[data-layer-backdrop]")) closeLayer(layer);
   });
 });
+
+if (signupPopup) {
+  const DISMISS_KEY = "wennem:signup-popup-dismissed-at";
+  const SUBMIT_FLAG_KEY = "wennem:signup-popup-submitting";
+  const dismissDays = Number(signupPopup.dataset.dismissDays || 7);
+  const delaySeconds = Number(signupPopup.dataset.delaySeconds || 6);
+
+  // Shopify's `form.posted_successfully?` is shared across every {% form 'customer' %}
+  // on the page (footer, homepage newsletter, this popup), so data-posted alone can't
+  // tell us THIS form was the one submitted. Flag intent client-side before the native
+  // submit navigates away, then only trust data-posted if that flag survived the redirect.
+  const justSubmittedPopup = window.sessionStorage.getItem(SUBMIT_FLAG_KEY) === "1";
+  window.sessionStorage.removeItem(SUBMIT_FLAG_KEY);
+  const wasPosted = signupPopup.dataset.posted === "true" && justSubmittedPopup;
+
+  const popupForm = signupPopup.closest("form");
+  if (popupForm) {
+    popupForm.addEventListener("submit", () => {
+      window.sessionStorage.setItem(SUBMIT_FLAG_KEY, "1");
+    });
+  }
+
+  function recordDismissal() {
+    localStorage.setItem(DISMISS_KEY, String(Date.now()));
+  }
+
+  function isWithinDismissWindow() {
+    const storedAt = Number(localStorage.getItem(DISMISS_KEY));
+    if (!storedAt) return false;
+    const elapsedDays = (Date.now() - storedAt) / (1000 * 60 * 60 * 24);
+    return elapsedDays < dismissDays;
+  }
+
+  document.querySelectorAll(selectors.closeSignupPopup).forEach((button) => {
+    button.addEventListener("click", () => {
+      closeLayer(signupPopup);
+      recordDismissal();
+    });
+  });
+
+  document.querySelectorAll(selectors.openSignupPopup).forEach((button) => {
+    button.addEventListener("click", () => openLayer(signupPopup));
+  });
+
+  signupPopup.addEventListener("click", (event) => {
+    if (event.target.matches("[data-layer-backdrop]")) recordDismissal();
+  });
+  trapEscape(signupPopup, () => recordDismissal());
+
+  if (wasPosted) {
+    openLayer(signupPopup);
+    recordDismissal();
+  } else if (!isWithinDismissWindow()) {
+    window.setTimeout(() => openLayer(signupPopup), delaySeconds * 1000);
+  }
+}
 
 
 document.querySelectorAll("[data-product-gallery]").forEach((gallery) => {
@@ -126,6 +220,72 @@ document.querySelectorAll("[data-product-gallery]").forEach((gallery) => {
 
   thumbs.forEach((thumb) => {
     thumb.addEventListener("click", () => showSlide(thumb.dataset.galleryIndex));
+  });
+});
+
+const zoomImage = zoomOverlay ? zoomOverlay.querySelector("[data-zoom-image]") : null;
+const zoomStage = zoomOverlay ? zoomOverlay.querySelector("[data-zoom-stage]") : null;
+
+function openZoomImage(src, alt) {
+  if (!zoomOverlay || !zoomImage || !src) return;
+  zoomImage.src = src;
+  zoomImage.alt = alt || "";
+  if (zoomStage) zoomStage.classList.remove("is-zoomed");
+  openLayer(zoomOverlay);
+}
+
+if (zoomStage) {
+  zoomStage.addEventListener("click", () => zoomStage.classList.toggle("is-zoomed"));
+
+  // Mouse users pan by moving the cursor; touch users keep native scroll/drag.
+  zoomStage.addEventListener("pointermove", (event) => {
+    if (event.pointerType && event.pointerType !== "mouse") return;
+    if (!zoomStage.classList.contains("is-zoomed")) return;
+
+    const rect = zoomStage.getBoundingClientRect();
+    const ratioX = Math.min(Math.max((event.clientX - rect.left) / rect.width, 0), 1);
+    const ratioY = Math.min(Math.max((event.clientY - rect.top) / rect.height, 0), 1);
+
+    zoomStage.scrollLeft = ratioX * (zoomStage.scrollWidth - zoomStage.clientWidth);
+    zoomStage.scrollTop = ratioY * (zoomStage.scrollHeight - zoomStage.clientHeight);
+  });
+}
+
+const supportsHoverZoom = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+const ZOOM_LOUPE_FACTOR = 1.7;
+
+document.querySelectorAll("[data-zoom-trigger]").forEach((trigger) => {
+  const src = trigger.dataset.zoomSrc;
+
+  trigger.addEventListener("click", () => {
+    const image = trigger.querySelector("img");
+    openZoomImage(src, image ? image.alt : "");
+  });
+
+  if (!supportsHoverZoom || !src) return;
+
+  const loupe = document.createElement("span");
+  loupe.className = "product-gallery__loupe";
+  loupe.setAttribute("aria-hidden", "true");
+  loupe.style.backgroundImage = `url("${src}")`;
+  trigger.appendChild(loupe);
+
+  trigger.addEventListener("pointermove", (event) => {
+    if (event.pointerType && event.pointerType !== "mouse") return;
+    const rect = trigger.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    loupe.style.left = `${x}px`;
+    loupe.style.top = `${y}px`;
+    loupe.style.backgroundSize = `${rect.width * ZOOM_LOUPE_FACTOR}px ${rect.height * ZOOM_LOUPE_FACTOR}px`;
+    loupe.style.backgroundPosition = `${(x / rect.width) * 100}% ${(y / rect.height) * 100}%`;
+    loupe.classList.add("is-active");
+  });
+
+  trigger.addEventListener("pointerleave", (event) => {
+    if (event.pointerType && event.pointerType !== "mouse") return;
+    loupe.classList.remove("is-active");
   });
 });
 
@@ -220,6 +380,7 @@ document.querySelectorAll(selectors.quickAdd).forEach((form) => {
         headers: { "Accept": "application/json" },
         body: new FormData(form),
       });
+      await refreshCart();
       openLayer(cartDrawer);
     } catch (error) {
       form.submit();

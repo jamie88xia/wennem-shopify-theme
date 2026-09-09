@@ -1,0 +1,27 @@
+{% if settings.promo_enabled %}
+  <section class="section preorder-band">
+    <div class="page-width preorder-inner">
+      <div>
+        {% if section.settings.eyebrow != blank %}
+          <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+        {% endif %}
+        <h2>{{ settings.promo_heading }}</h2>
+      </div>
+      <div>
+        <p>{{ settings.promo_body }}</p>
+        <button type="button" class="button button--primary" data-open-signup-popup>{{ settings.promo_cta_label }}</button>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Promo band",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Join the list" },
+    { "type": "paragraph", "content": "Heading, body copy, button label, and enable/disable come from Theme Settings > Promotion, shared with the signup popup and shop page banner." }
+  ],
+  "presets": [{ "name": "Promo band" }]
+}
+{% endschema %}

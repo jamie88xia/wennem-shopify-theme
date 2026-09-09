@@ -81,7 +81,8 @@
         "type": "font_picker",
         "id": "heading_font",
         "label": "Heading font",
-        "default": "assistant_n4"
+        "info": "Stand-in for \"Atteron\" (thin, high-contrast serif) using Shopify's built-in font library. Swap this if Atteron turns out to be a licensed font you need to upload separately.",
+        "default": "playfair_display_n4"
       },
       {
         "type": "font_picker",
@@ -196,6 +197,48 @@
         "id": "free_shipping_threshold",
         "label": "Free shipping threshold in cents",
         "default": 25000
+      }
+    ]
+  },
+  {
+    "name": "Promotion",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "promo_enabled",
+        "label": "Enable signup promotion",
+        "info": "Controls both the first-visit popup and the shop page banner.",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "promo_heading",
+        "label": "Heading",
+        "default": "15% off your first order"
+      },
+      {
+        "type": "textarea",
+        "id": "promo_body",
+        "label": "Body copy",
+        "default": "Sign up and get 15% off orders over $100."
+      },
+      {
+        "type": "text",
+        "id": "promo_cta_label",
+        "label": "Shop page button label",
+        "default": "Get 15% off"
+      },
+      {
+        "type": "text",
+        "id": "promo_success_message",
+        "label": "Success message",
+        "default": "You're in. Here's your code:"
+      },
+      {
+        "type": "text",
+        "id": "promo_discount_code",
+        "label": "Discount code",
+        "info": "Must match a real discount code created in Shopify Admin > Discounts (15% off, $100 minimum). Leave blank until that code exists."
       }
     ]
   }

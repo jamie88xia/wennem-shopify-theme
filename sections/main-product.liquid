@@ -12,7 +12,9 @@
           <div class="product-gallery__slide{% if forloop.first %} is-active{% endif %}" data-gallery-slide data-gallery-index="{{ forloop.index0 }}"{% unless forloop.first %} hidden{% endunless %}>
             {% case media.media_type %}
               {% when 'image' %}
-                {{ media | image_url: width: 1200 | image_tag: loading: 'eager', sizes: '(min-width: 1000px) 44vw, 100vw', alt: media.alt | default: product.title }}
+                <button type="button" class="product-gallery__zoom" data-zoom-trigger data-zoom-src="{{ media | image_url: width: 2200 }}" aria-label="Zoom in on {{ media.alt | default: product.title | escape }}">
+                  {{ media | image_url: width: 1200 | image_tag: loading: 'eager', sizes: '(min-width: 1000px) 44vw, 100vw', alt: media.alt | default: product.title }}
+                </button>
               {% when 'video' %}
                 {{ media | video_tag: controls: true, image_size: '1200x' }}
               {% when 'external_video' %}
@@ -23,10 +25,14 @@
           </div>
         {% else %}
           <div class="product-gallery__slide is-active" data-gallery-slide data-gallery-index="0">
-            <img src="{{ 'wennem-hero.png' | asset_url }}" width="1693" height="929" alt="{{ product.title | escape }}">
+            <button type="button" class="product-gallery__zoom" data-zoom-trigger data-zoom-src="{{ 'wennem-hero.png' | asset_url }}" aria-label="Zoom in on {{ product.title | escape }}">
+              <img src="{{ 'wennem-hero.png' | asset_url }}" width="1693" height="929" alt="{{ product.title | escape }}">
+            </button>
           </div>
           <div class="product-gallery__slide" data-gallery-slide data-gallery-index="1" hidden>
-            <img src="{{ 'wennem-hero-studio.png' | asset_url }}" width="1536" height="1024" alt="{{ product.title | escape }}">
+            <button type="button" class="product-gallery__zoom" data-zoom-trigger data-zoom-src="{{ 'wennem-hero-studio.png' | asset_url }}" aria-label="Zoom in on {{ product.title | escape }}">
+              <img src="{{ 'wennem-hero-studio.png' | asset_url }}" width="1536" height="1024" alt="{{ product.title | escape }}">
+            </button>
           </div>
         {% endfor %}
       </div>
@@ -56,7 +62,9 @@
         <div class="product-gallery__tile">
           {% case media.media_type %}
             {% when 'image' %}
-              {{ media | image_url: width: 1100 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 34vw, 100vw', alt: media.alt | default: product.title }}
+              <button type="button" class="product-gallery__zoom" data-zoom-trigger data-zoom-src="{{ media | image_url: width: 2200 }}" aria-label="Zoom in on {{ media.alt | default: product.title | escape }}">
+                {{ media | image_url: width: 1100 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 34vw, 100vw', alt: media.alt | default: product.title }}
+              </button>
             {% when 'video' %}
               {{ media | video_tag: controls: true, image_size: '1000x' }}
             {% when 'external_video' %}
@@ -67,10 +75,14 @@
         </div>
       {% else %}
         <div class="product-gallery__tile">
-          <img src="{{ 'wennem-hero.png' | asset_url }}" width="1693" height="929" alt="{{ product.title | escape }}">
+          <button type="button" class="product-gallery__zoom" data-zoom-trigger data-zoom-src="{{ 'wennem-hero.png' | asset_url }}" aria-label="Zoom in on {{ product.title | escape }}">
+            <img src="{{ 'wennem-hero.png' | asset_url }}" width="1693" height="929" alt="{{ product.title | escape }}">
+          </button>
         </div>
         <div class="product-gallery__tile">
-          <img src="{{ 'wennem-hero-studio.png' | asset_url }}" width="1536" height="1024" alt="{{ product.title | escape }}">
+          <button type="button" class="product-gallery__zoom" data-zoom-trigger data-zoom-src="{{ 'wennem-hero-studio.png' | asset_url }}" aria-label="Zoom in on {{ product.title | escape }}">
+            <img src="{{ 'wennem-hero-studio.png' | asset_url }}" width="1536" height="1024" alt="{{ product.title | escape }}">
+          </button>
         </div>
       {% endfor %}
     </div>
@@ -216,6 +228,19 @@
 
 <div class="sticky-atc">
   <button class="button button--primary button--full" form="{{ product_form_id }}" type="submit">{{ section.settings.button_label }} · {{ current_variant.price | money }}</button>
+</div>
+
+<div class="zoom-overlay" data-zoom-overlay hidden role="dialog" aria-modal="true" aria-label="Zoomed product image">
+  <div class="zoom-overlay__backdrop" data-layer-backdrop></div>
+  <div class="zoom-overlay__panel">
+    <div class="zoom-overlay__header">
+      <button class="icon-button" type="button" data-zoom-close aria-label="Close zoomed image">×</button>
+    </div>
+    <div class="zoom-overlay__stage" data-zoom-stage>
+      <img data-zoom-image src="{{ 'wennem-hero.png' | asset_url }}" width="1693" height="929" alt="">
+    </div>
+    <p class="zoom-overlay__hint">Click to zoom, then move your cursor to explore. Click again to zoom out.</p>
+  </div>
 </div>
 
 {% schema %}

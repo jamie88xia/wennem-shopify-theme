@@ -6,9 +6,16 @@
       <p>{{ section.settings.copy }}</p>
     </div>
     {% form 'customer', class: 'newsletter-form' %}
-      <input type="hidden" name="contact[tags]" value="newsletter">
-      <input type="email" name="contact[email]" autocomplete="email" placeholder="Email address" aria-label="Email address" required>
-      <button type="submit">Subscribe</button>
+      {% if form.posted_successfully? %}
+        <p class="form-message" tabindex="-1">{{ section.settings.success_message }}</p>
+      {% else %}
+        {% if form.errors %}
+          <div class="form-message form-message--error">{{ form.errors | default_errors }}</div>
+        {% endif %}
+        <input type="hidden" name="contact[tags]" value="{{ section.settings.tags }}">
+        <input type="email" name="contact[email]" autocomplete="email" placeholder="Email address" aria-label="Email address" required>
+        <button type="submit">Subscribe</button>
+      {% endif %}
     {% endform %}
   </div>
 </section>
@@ -19,7 +26,9 @@
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Private list" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Receive the edit before it arrives." },
-    { "type": "textarea", "id": "copy", "label": "Copy", "default": "Early access, fit notes, care guidance, and quiet launches." }
+    { "type": "textarea", "id": "copy", "label": "Copy", "default": "Early access, fit notes, care guidance, and quiet launches." },
+    { "type": "text", "id": "tags", "label": "Customer tags", "default": "newsletter,pre-launch,launch-list" },
+    { "type": "text", "id": "success_message", "label": "Success message", "default": "Thank you. You're on the list." }
   ],
   "presets": [{ "name": "Newsletter" }]
 }
