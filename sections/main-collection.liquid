@@ -19,38 +19,27 @@
   </div>
 </section>
 
-<section class="page-width collection-layout collection-layout--minimal">
-  <aside class="filter-panel filter-panel--minimal" aria-label="Collection filters">
-    <form>
-      {% for filter in collection.filters %}
-        <details class="filter-group" open>
-          <summary>{{ filter.label }} <span>+</span></summary>
-          <div class="filter-values">
-            {% for value in filter.values %}
-              <label>
-                <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}>
-                <span>{{ value.label }}{% unless value.count == 0 %} ({{ value.count }}){% endunless %}</span>
-              </label>
-            {% endfor %}
-          </div>
-        </details>
-      {% else %}
-        <details class="filter-group" open>
-          <summary>Size <span>+</span></summary>
-          <div class="filter-values"><label><input type="checkbox"> XS</label><label><input type="checkbox"> S</label><label><input type="checkbox"> M</label></div>
-        </details>
-        <details class="filter-group" open>
-          <summary>Color <span>+</span></summary>
-          <div class="filter-values"><label><input type="checkbox"> Black</label><label><input type="checkbox"> Ivory</label><label><input type="checkbox"> Taupe</label></div>
-        </details>
-        <details class="filter-group" open>
-          <summary>Price <span>+</span></summary>
-          <div class="filter-values"><label><input type="checkbox"> Under $200</label><label><input type="checkbox"> $200-$400</label></div>
-        </details>
-      {% endfor %}
-      <button class="button button--full" type="submit">Apply</button>
-    </form>
-  </aside>
+<section class="page-width collection-layout collection-layout--minimal{% unless collection.filters.size > 0 %} collection-layout--unfiltered{% endunless %}">
+  {% if collection.filters.size > 0 %}
+    <aside class="filter-panel filter-panel--minimal" aria-label="Collection filters">
+      <form>
+        {% for filter in collection.filters %}
+          <details class="filter-group" open>
+            <summary>{{ filter.label }} <span>+</span></summary>
+            <div class="filter-values">
+              {% for value in filter.values %}
+                <label>
+                  <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}>
+                  <span>{{ value.label }}{% unless value.count == 0 %} ({{ value.count }}){% endunless %}</span>
+                </label>
+              {% endfor %}
+            </div>
+          </details>
+        {% endfor %}
+        <button class="button button--full" type="submit">Apply</button>
+      </form>
+    </aside>
+  {% endif %}
 
   <div>
     {% paginate collection.products by section.settings.products_per_page %}
