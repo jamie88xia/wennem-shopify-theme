@@ -821,6 +821,20 @@ p {
   border: 1px solid var(--color-border);
 }
 
+/* Size guide cards hold wide tables, so size to content instead of a fixed 4-up. */
+.guide-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+}
+
+/* Fit tools render 3 metrics, not 4 — avoid a trailing empty cell. */
+.fit-tools {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+}
+
+.guide-card--wide {
+  grid-column: 1 / -1;
+}
+
 .promise-item,
 .guide-card,
 .fit-tool,
@@ -1018,6 +1032,10 @@ p {
   display: grid;
   grid-template-columns: 280px minmax(0, 1fr);
   gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.collection-layout--unfiltered {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .filter-panel {
@@ -1346,9 +1364,25 @@ p {
 .accordion summary {
   display: flex;
   justify-content: space-between;
+  gap: 1rem;
+  cursor: pointer;
   font-size: 0.76rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.accordion details > :not(summary) {
+  margin: 0.9rem 0 0;
+  max-width: 62ch;
+  color: var(--color-muted);
+}
+
+.accordion details p {
+  margin-bottom: 0.65rem;
+}
+
+.accordion details p:last-child {
+  margin-bottom: 0;
 }
 
 .trust-badges {
