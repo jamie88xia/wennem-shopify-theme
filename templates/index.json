@@ -35,6 +35,9 @@
         "show_price": true
       }
     },
+    "promo": {
+      "type": "promo-band"
+    },
     "newsletter": {
       "type": "newsletter"
     }
@@ -43,6 +46,7 @@
     "hero",
     "featured",
     "story",
+    "promo",
     "newsletter"
   ]
 }

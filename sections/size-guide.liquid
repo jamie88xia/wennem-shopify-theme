@@ -8,38 +8,63 @@
       <p>{{ section.settings.copy }}</p>
     </div>
 
-    <div class="guide-grid">
-      <article class="guide-card">
-        <h2>Body measurements</h2>
-        <div class="table-wrap">
-          <table>
-            <caption class="visually-hidden">Body measurements by size</caption>
-            <thead><tr><th>Size</th><th>Waist</th><th>Hip</th><th>Recommended height</th></tr></thead>
-            <tbody>
-              <tr><th>00</th><td>24"</td><td>34"</td><td>5'4" and under</td></tr>
-              <tr><th>0</th><td>25"</td><td>35"</td><td>5'4" and under</td></tr>
-              <tr><th>2</th><td>26"</td><td>36"</td><td>5'4" and under</td></tr>
-              <tr><th>4</th><td>27"</td><td>37"</td><td>5'4" and under</td></tr>
-              <tr><th>6</th><td>28"</td><td>38"</td><td>5'4" and under</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </article>
+    {% assign measurement_rows = section.blocks | where: 'type', 'measurement_row' %}
+    {% assign conversion_rows = section.blocks | where: 'type', 'conversion_row' %}
+    {% assign inseam_rows = section.blocks | where: 'type', 'inseam_row' %}
 
-      <article class="guide-card">
-        <h2>Petite inseam guide</h2>
-        <div class="table-wrap">
-          <table>
-            <caption class="visually-hidden">Petite inseam reference</caption>
-            <thead><tr><th>Length</th><th>Best for</th><th>Styling note</th></tr></thead>
-            <tbody>
-              <tr><th>26"</th><td>Full length on many shoppers 5'1" and under</td><td>Works with flats and low heels</td></tr>
-              <tr><th>27"</th><td>Full length on many shoppers 5'2"-5'4"</td><td>Polished with loafers or boots</td></tr>
-              <tr><th>28"</th><td>Slight break or heel-friendly length</td><td>Best when you prefer extra drape</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </article>
+    <div class="guide-grid">
+      {% if measurement_rows.size > 0 %}
+        <article class="guide-card">
+          <h2>{{ section.settings.measurement_heading }}</h2>
+          {% if section.settings.measurement_note != blank %}<p>{{ section.settings.measurement_note }}</p>{% endif %}
+          <div class="table-wrap">
+            <table>
+              <caption class="visually-hidden">{{ section.settings.measurement_heading }}</caption>
+              <thead><tr><th>Size</th><th>Waist</th><th>Hip</th><th>Front rise</th><th>Back rise</th><th>Leg opening</th></tr></thead>
+              <tbody>
+                {% for block in measurement_rows %}
+                  <tr {{ block.shopify_attributes }}><th>{{ block.settings.us_size }}</th><td>{{ block.settings.waist }}</td><td>{{ block.settings.hip }}</td><td>{{ block.settings.front_rise }}</td><td>{{ block.settings.back_rise }}</td><td>{{ block.settings.leg_opening }}</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </article>
+      {% endif %}
+
+      {% if conversion_rows.size > 0 %}
+        <article class="guide-card">
+          <h2>{{ section.settings.conversion_heading }}</h2>
+          <div class="table-wrap">
+            <table>
+              <caption class="visually-hidden">{{ section.settings.conversion_heading }}</caption>
+              <thead><tr><th>US letter size</th><th>Boutique size</th></tr></thead>
+              <tbody>
+                {% for block in conversion_rows %}
+                  <tr {{ block.shopify_attributes }}><th>{{ block.settings.us_size }}</th><td>{{ block.settings.boutique_size }}</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </article>
+      {% endif %}
+
+      {% if inseam_rows.size > 0 %}
+        <article class="guide-card">
+          <h2>{{ section.settings.inseam_heading }}</h2>
+          {% if section.settings.inseam_note != blank %}<p>{{ section.settings.inseam_note }}</p>{% endif %}
+          <div class="table-wrap">
+            <table>
+              <caption class="visually-hidden">{{ section.settings.inseam_heading }}</caption>
+              <thead><tr><th>Length</th><th>Inseam (in)</th><th>Inseam (cm)</th></tr></thead>
+              <tbody>
+                {% for block in inseam_rows %}
+                  <tr {{ block.shopify_attributes }}><th>{{ block.settings.length_label }}</th><td>{{ block.settings.inseam_in }}</td><td>{{ block.settings.inseam_cm }}</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </article>
+      {% endif %}
     </div>
 
     <div class="measure-steps">
@@ -64,7 +89,64 @@
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Fit reference" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Petite size guide" },
     { "type": "textarea", "id": "copy", "label": "Copy", "default": "Use this as a starting point, then check each product page for garment-specific rise, inseam, and leg measurements." },
+    { "type": "text", "id": "measurement_heading", "label": "Body measurements table heading", "default": "Body measurements" },
+    { "type": "textarea", "id": "measurement_note", "label": "Body measurements note", "default": "Hand measured by our supplier; allow 1-3\" of natural variance." },
+    { "type": "text", "id": "conversion_heading", "label": "Size conversion table heading", "default": "Size conversion to boutique inventory sizing" },
+    { "type": "text", "id": "inseam_heading", "label": "Inseam table heading", "default": "Length — inseam" },
+    { "type": "textarea", "id": "inseam_note", "label": "Inseam table note", "default": "Select independently of size. Inseam length is fixed by our supplier and does not vary by waist/hip size." },
     { "type": "textarea", "id": "launch_note", "label": "Launch note", "default": "WENNEM starts with two trouser styles. Each product page can expose its own garment measurements through metafields as the fit library expands." }
+  ],
+  "blocks": [
+    {
+      "type": "measurement_row",
+      "name": "Body measurement row",
+      "settings": [
+        { "type": "text", "id": "us_size", "label": "US letter size", "default": "S" },
+        { "type": "text", "id": "waist", "label": "Waist", "default": "27.6\"" },
+        { "type": "text", "id": "hip", "label": "Hip", "default": "36.4\"" },
+        { "type": "text", "id": "front_rise", "label": "Front rise", "default": "10.8\"" },
+        { "type": "text", "id": "back_rise", "label": "Back rise", "default": "14.8\"" },
+        { "type": "text", "id": "leg_opening", "label": "Leg opening", "default": "8.8\"" }
+      ]
+    },
+    {
+      "type": "conversion_row",
+      "name": "Size conversion row",
+      "settings": [
+        { "type": "text", "id": "us_size", "label": "US letter size", "default": "S" },
+        { "type": "text", "id": "boutique_size", "label": "Boutique size", "default": "28" }
+      ]
+    },
+    {
+      "type": "inseam_row",
+      "name": "Inseam row",
+      "settings": [
+        { "type": "text", "id": "length_label", "label": "Length label", "default": "Petite" },
+        { "type": "text", "id": "inseam_in", "label": "Inseam (in)", "default": "~27.5\"" },
+        { "type": "text", "id": "inseam_cm", "label": "Inseam (cm)", "default": "~70 cm" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Size guide",
+      "blocks": [
+        { "type": "measurement_row", "settings": { "us_size": "XXS", "waist": "25.1\"", "hip": "34.1\"", "front_rise": "10.4\"", "back_rise": "14.3\"", "leg_opening": "8.5\"" } },
+        { "type": "measurement_row", "settings": { "us_size": "XS", "waist": "26.4\"", "hip": "35.2\"", "front_rise": "10.6\"", "back_rise": "14.6\"", "leg_opening": "8.7\"" } },
+        { "type": "measurement_row", "settings": { "us_size": "S", "waist": "27.6\"", "hip": "36.4\"", "front_rise": "10.8\"", "back_rise": "14.8\"", "leg_opening": "8.8\"" } },
+        { "type": "measurement_row", "settings": { "us_size": "M", "waist": "28.9\"", "hip": "37.6\"", "front_rise": "11.0\"", "back_rise": "15.0\"", "leg_opening": "9.0\"" } },
+        { "type": "measurement_row", "settings": { "us_size": "L", "waist": "31.4\"", "hip": "40.0\"", "front_rise": "11.4\"", "back_rise": "15.5\"", "leg_opening": "9.2\"" } },
+        { "type": "measurement_row", "settings": { "us_size": "XL", "waist": "32.7\"", "hip": "41.1\"", "front_rise": "11.6\"", "back_rise": "15.7\"", "leg_opening": "9.3\"" } },
+        { "type": "conversion_row", "settings": { "us_size": "XXS", "boutique_size": "26" } },
+        { "type": "conversion_row", "settings": { "us_size": "XS", "boutique_size": "27" } },
+        { "type": "conversion_row", "settings": { "us_size": "S", "boutique_size": "28" } },
+        { "type": "conversion_row", "settings": { "us_size": "M", "boutique_size": "29" } },
+        { "type": "conversion_row", "settings": { "us_size": "L", "boutique_size": "31" } },
+        { "type": "conversion_row", "settings": { "us_size": "XL", "boutique_size": "32" } },
+        { "type": "inseam_row", "settings": { "length_label": "Petite", "inseam_in": "~27.5\"", "inseam_cm": "~70 cm" } },
+        { "type": "inseam_row", "settings": { "length_label": "Tall", "inseam_in": "~29.5\"", "inseam_cm": "~75 cm" } }
+      ]
+    }
   ]
 }
 {% endschema %}

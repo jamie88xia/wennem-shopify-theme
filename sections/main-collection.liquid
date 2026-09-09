@@ -9,6 +9,13 @@
       <p class="product-count">{{ collection.products_count }} products</p>
       <a class="button" href="{{ routes.collections_url }}/pre-order">Pre-order</a>
     </div>
+
+    {% if settings.promo_enabled %}
+      <div class="promo-banner">
+        <p><strong>{{ settings.promo_heading }}</strong> — {{ settings.promo_body }}</p>
+        <button type="button" class="button" data-open-signup-popup>{{ settings.promo_cta_label }}</button>
+      </div>
+    {% endif %}
   </div>
 </section>
 
